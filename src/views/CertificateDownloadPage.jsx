@@ -4,34 +4,28 @@ import { toPng } from 'html-to-image';
 import { Download, ArrowLeft, ShieldCheck, CheckCircle2 } from 'lucide-react';
 
 /* ==========================================================================
-   Premium Certificate Component
+   1. Downloadable Certificate (Fixed 900px Landscape for HD PNG Generation)
    ========================================================================== */
 const PremiumCertificate = ({ userName, innerRef, certificateId, config }) => {
   return (
     <div 
       ref={innerRef}
       style={{
-        width: '100%',
-        maxWidth: '1000px', // High resolution base
-        minHeight: '750px', // Ensures it's tall enough but scales naturally if content grows
+        width: '900px',
+        minHeight: '650px',
         margin: '0 auto',
-        background: '#faf9f6', // Subtle ivory
+        background: '#faf9f6',
         position: 'relative',
-        padding: '24px', // Space for outer border
+        padding: '24px',
         boxSizing: 'border-box',
-        color: '#0f172a'
-        // Removed fixed aspectRatio to prevent content from spilling out of bounds
+        color: '#0f172a',
+        fontFamily: 'system-ui, -apple-system, sans-serif'
       }}
     >
-      {/* Import Signature Font */}
-      <style>
-        {`@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap');`}
-      </style>
-
       {/* Outer Border (1.5px Gold) */}
       <div style={{
         position: 'absolute',
-        top: '20px', left: '20px', right: '20px', bottom: '20px',
+        top: '16px', left: '16px', right: '16px', bottom: '16px',
         border: '1.5px solid #d4af37',
         pointerEvents: 'none',
         boxSizing: 'border-box',
@@ -41,17 +35,17 @@ const PremiumCertificate = ({ userName, innerRef, certificateId, config }) => {
       {/* Inner Border (1px Navy) */}
       <div style={{
         position: 'absolute',
-        top: '28px', left: '28px', right: '28px', bottom: '28px',
+        top: '22px', left: '22px', right: '22px', bottom: '22px',
         border: '1px solid #0f172a',
         pointerEvents: 'none',
         boxSizing: 'border-box',
         zIndex: 1
       }}>
         {/* Corner Ornaments */}
-        <div style={{ position: 'absolute', top: -5, left: -5, width: 10, height: 10, border: '1px solid #d4af37', background: '#faf9f6' }} />
-        <div style={{ position: 'absolute', top: -5, right: -5, width: 10, height: 10, border: '1px solid #d4af37', background: '#faf9f6' }} />
-        <div style={{ position: 'absolute', bottom: -5, left: -5, width: 10, height: 10, border: '1px solid #d4af37', background: '#faf9f6' }} />
-        <div style={{ position: 'absolute', bottom: -5, right: -5, width: 10, height: 10, border: '1px solid #d4af37', background: '#faf9f6' }} />
+        <div style={{ position: 'absolute', top: -4, left: -4, width: 8, height: 8, border: '1px solid #d4af37', background: '#faf9f6' }} />
+        <div style={{ position: 'absolute', top: -4, right: -4, width: 8, height: 8, border: '1px solid #d4af37', background: '#faf9f6' }} />
+        <div style={{ position: 'absolute', bottom: -4, left: -4, width: 8, height: 8, border: '1px solid #d4af37', background: '#faf9f6' }} />
+        <div style={{ position: 'absolute', bottom: -4, right: -4, width: 8, height: 8, border: '1px solid #d4af37', background: '#faf9f6' }} />
       </div>
 
       {/* Main Content Container */}
@@ -62,192 +56,175 @@ const PremiumCertificate = ({ userName, innerRef, certificateId, config }) => {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        padding: '70px 60px 80px', // Extra bottom padding (80px) to keep content well inside the border
+        padding: '36px 48px 48px',
         boxSizing: 'border-box',
         textAlign: 'center',
-        fontFamily: 'system-ui, -apple-system, sans-serif',
         zIndex: 2
       }}>
-        
-        {/* Hierarchy 1: Logo */}
         <img 
           src="https://res.cloudinary.com/hxbamdqf/image/upload/v1784698269/Mantra_logo_yptwwe.svg" 
           alt="MantraCare" 
-          style={{ height: '32px', marginBottom: '16px' }} 
+          style={{ height: '30px', marginBottom: '12px' }} 
           crossOrigin="anonymous"
         />
 
-        {/* Hierarchy 2: Program Name */}
         <div style={{ 
-          fontSize: '0.85rem', 
+          fontSize: '0.8rem', 
           textTransform: 'uppercase', 
-          letterSpacing: '0.15em', 
+          letterSpacing: '0.14em', 
           color: '#475569',
-          marginBottom: '28px',
+          marginBottom: '16px',
           fontWeight: 600
         }}>
           {config.programName}
         </div>
 
-        {/* Hierarchy 3: Title */}
         <h1 style={{
-          fontFamily: "Georgia, 'Times New Roman', serif", // Elegant Serif
-          fontSize: '2rem', 
+          fontFamily: "Georgia, 'Times New Roman', serif",
+          fontSize: '1.85rem', 
           fontWeight: 400,
           color: '#0f172a',
           textTransform: 'uppercase',
-          letterSpacing: '0.1em',
-          margin: '0 0 20px 0'
+          letterSpacing: '0.08em',
+          margin: '0 0 14px 0'
         }}>
           {config.certificateTitle}
         </h1>
         
-        {/* Hierarchy 4: Presented To */}
         <p style={{
-          fontSize: '1rem',
+          fontSize: '0.95rem',
           color: '#475569',
-          margin: '0 0 20px 0'
+          margin: '0 0 12px 0'
         }}>
           {config.awardText}
         </p>
 
-        {/* Hierarchy 5: Recipient Name */}
         <h2 style={{
-          fontFamily: "'Great Vibes', 'Brush Script MT', cursive", // Signature Font
-          fontSize: '4.5rem', // Large focal point
+          fontFamily: "'Great Vibes', 'Brush Script MT', cursive",
+          fontSize: '3.8rem',
           fontWeight: 400,
           color: '#0f172a',
-          margin: '0 0 24px 0',
-          borderBottom: '2px solid #d4af37', // Gold underline
-          paddingBottom: '4px',
-          paddingLeft: '40px',
-          paddingRight: '40px',
-          minWidth: '50%',
+          margin: '0 0 16px 0',
+          borderBottom: '2px solid #d4af37',
+          paddingBottom: '2px',
+          paddingLeft: '30px',
+          paddingRight: '30px',
+          minWidth: '320px',
+          maxWidth: '650px',
+          wordBreak: 'break-word',
           lineHeight: '1.1'
         }}>
           {userName || 'Your Name'}
         </h2>
 
-        {/* Hierarchy 6: Achievement Text */}
         <div style={{
-          fontSize: '1.05rem',
+          fontSize: '0.95rem',
           color: '#334155',
-          margin: '0 0 28px 0',
-          maxWidth: '65%',
-          lineHeight: '1.6'
+          margin: '0 0 18px 0',
+          maxWidth: '75%',
+          lineHeight: '1.5'
         }}>
           {config.completionText}<br/>
           <strong>{config.courseName}</strong>
         </div>
 
-        {/* Hierarchy 7: Quote */}
         <div style={{
           background: '#f8fafc',
           border: '1px solid #e2e8f0',
-          borderRadius: '12px',
-          padding: '16px 32px',
-          marginBottom: '40px', 
+          borderRadius: '10px',
+          padding: '12px 24px',
+          marginBottom: '26px', 
           fontStyle: 'italic',
           color: '#475569',
-          fontSize: '0.95rem',
-          fontFamily: "Georgia, 'Times New Roman', serif"
+          fontSize: '0.88rem',
+          fontFamily: "Georgia, 'Times New Roman', serif",
+          maxWidth: '85%'
         }}>
           {config.quote}
         </div>
 
-        <div style={{ flex: 1 }} /> {/* Flexible spacer to push footer down */}
-
-        {/* Hierarchy 8: Footer (3 Columns) */}
+        {/* Footer (3 Columns Side-by-Side) */}
         <div style={{
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'flex-end',
-          width: '75%', // Keep it slightly narrower so it doesn't touch the absolute positioned seal on the right
-          marginBottom: '24px'
+          width: '78%',
+          marginBottom: '16px'
         }}>
-          {/* Left Column */}
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '160px' }}>
             <div style={{
               fontFamily: "'Great Vibes', 'Brush Script MT', cursive",
-              fontSize: '1.8rem',
+              fontSize: '1.6rem',
               color: '#0f172a',
               borderBottom: '1px solid #cbd5e1',
-              paddingBottom: '4px',
-              marginBottom: '8px',
-              width: '180px',
+              paddingBottom: '2px',
+              marginBottom: '6px',
+              width: '100%',
               lineHeight: '1'
             }}>
               MantraCare
             </div>
-            <span style={{ fontSize: '0.75rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+            <span style={{ fontSize: '0.68rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
               Authorized By
             </span>
-            <span style={{ fontSize: '0.85rem', color: '#0f172a', fontWeight: 500, marginTop: '2px' }}>
+            <span style={{ fontSize: '0.78rem', color: '#0f172a', fontWeight: 500, marginTop: '2px' }}>
               {config.authorizedBy}
             </span>
           </div>
 
-          {/* Center Column */}
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '160px' }}>
             <div style={{
-              fontSize: '0.95rem',
+              fontSize: '0.85rem',
               color: '#0f172a',
               fontFamily: 'monospace',
               borderBottom: '1px solid #cbd5e1',
-              paddingBottom: '4px',
-              marginBottom: '8px',
-              width: '180px',
-              paddingTop: '20px' // Visually align the baseline with the bottom of the signature
+              paddingBottom: '2px',
+              marginBottom: '6px',
+              width: '100%'
             }}>
               {certificateId}
             </div>
-            <span style={{ fontSize: '0.75rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+            <span style={{ fontSize: '0.68rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
               Certificate ID
             </span>
           </div>
 
-          {/* Right Column */}
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '160px' }}>
             <div style={{
-              fontSize: '1rem',
+              fontSize: '0.88rem',
               color: '#0f172a',
               borderBottom: '1px solid #cbd5e1',
-              paddingBottom: '4px',
-              marginBottom: '8px',
-              width: '180px',
-              paddingTop: '20px' // Visually align the baseline with the bottom of the signature
+              paddingBottom: '2px',
+              marginBottom: '6px',
+              width: '100%'
             }}>
               {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
             </div>
-            <span style={{ fontSize: '0.75rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+            <span style={{ fontSize: '0.68rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
               Date of Completion
             </span>
           </div>
         </div>
 
-        {/* Small Bottom Center Footer */}
         <div style={{
-          fontSize: '0.65rem',
+          fontSize: '0.62rem',
           color: '#94a3b8',
-          letterSpacing: '0.02em',
-          marginTop: '0px'
+          letterSpacing: '0.02em'
         }}>
           {config.footer}
         </div>
-
       </div>
 
-      {/* Corporate Verification Seal Absolute positioned lower-right */}
-      {/* Positioned inside the bounds of the inner border (which is at 28px from edge) */}
+      {/* Corporate Verification Seal */}
       <div style={{
         position: 'absolute',
-        bottom: '52px', // 24px clearance from the 28px inner border
-        right: '52px',  // 24px clearance from the 28px inner border
-        width: '90px',
-        height: '90px',
+        bottom: '36px',
+        right: '36px',
+        width: '80px',
+        height: '80px',
         borderRadius: '50%',
         background: '#ffffff',
-        border: '3px solid #1e40af', // Corporate Blue border
+        border: '2.5px solid #1e40af',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -256,22 +233,254 @@ const PremiumCertificate = ({ userName, innerRef, certificateId, config }) => {
         zIndex: 10
       }}>
         <div style={{
-          width: '76px',
-          height: '76px',
+          width: '68px',
+          height: '68px',
           borderRadius: '50%',
-          border: '1px solid #93c5fd', // Lighter blue inner ring
+          border: '1px solid #93c5fd',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
           background: '#f8fafc'
         }}>
-          <ShieldCheck size={20} color="#1e40af" style={{ marginBottom: '2px' }} />
-          <span style={{ fontSize: '0.5rem', fontWeight: 800, color: '#1e40af', letterSpacing: '0.05em' }}>VERIFIED</span>
-          <span style={{ fontSize: '0.4rem', color: '#475569', marginTop: '2px', textAlign: 'center', lineHeight: '1.2', fontWeight: 600 }}>Issued by<br/>MantraCare</span>
+          <ShieldCheck size={18} color="#1e40af" style={{ marginBottom: '2px' }} />
+          <span style={{ fontSize: '0.45rem', fontWeight: 800, color: '#1e40af', letterSpacing: '0.05em' }}>VERIFIED</span>
+          <span style={{ fontSize: '0.35rem', color: '#475569', marginTop: '1px', textAlign: 'center', lineHeight: '1.2', fontWeight: 600 }}>Issued by<br/>MantraCare</span>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+/* ==========================================================================
+   2. On-Screen Preview (Fluid, Beautiful & Responsive on Mobile/Tablet)
+   ========================================================================== */
+const OnScreenCertificatePreview = ({ userName, certificateId, config }) => {
+  return (
+    <div 
+      style={{
+        width: '100%',
+        maxWidth: '750px',
+        margin: '0 auto',
+        background: '#faf9f6',
+        position: 'relative',
+        padding: '16px',
+        borderRadius: '12px',
+        boxSizing: 'border-box',
+        color: '#0f172a',
+        boxShadow: '0 20px 40px rgba(0, 0, 0, 0.4)',
+        fontFamily: 'system-ui, -apple-system, sans-serif'
+      }}
+    >
+      <style>
+        {`@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap');`}
+      </style>
+
+      {/* Outer Border */}
+      <div style={{
+        position: 'absolute',
+        top: '10px', left: '10px', right: '10px', bottom: '10px',
+        border: '1.5px solid #d4af37',
+        borderRadius: '6px',
+        pointerEvents: 'none',
+        boxSizing: 'border-box',
+        zIndex: 1
+      }} />
+
+      {/* Inner Border */}
+      <div style={{
+        position: 'absolute',
+        top: '15px', left: '15px', right: '15px', bottom: '15px',
+        border: '1px solid #0f172a',
+        borderRadius: '4px',
+        pointerEvents: 'none',
+        boxSizing: 'border-box',
+        zIndex: 1
+      }} />
+
+      {/* Content Container */}
+      <div style={{
+        position: 'relative',
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        padding: '28px 16px 36px',
+        boxSizing: 'border-box',
+        textAlign: 'center',
+        zIndex: 2
+      }}>
+        <img 
+          src="https://res.cloudinary.com/hxbamdqf/image/upload/v1784698269/Mantra_logo_yptwwe.svg" 
+          alt="MantraCare" 
+          style={{ height: 'clamp(22px, 4vw, 28px)', marginBottom: '10px' }} 
+          crossOrigin="anonymous"
+        />
+
+        <div style={{ 
+          fontSize: 'clamp(0.65rem, 1.8vw, 0.78rem)', 
+          textTransform: 'uppercase', 
+          letterSpacing: '0.12em', 
+          color: '#475569',
+          marginBottom: '14px',
+          fontWeight: 600
+        }}>
+          {config.programName}
+        </div>
+
+        <h1 style={{
+          fontFamily: "Georgia, 'Times New Roman', serif",
+          fontSize: 'clamp(1.2rem, 3.8vw, 1.75rem)', 
+          fontWeight: 400,
+          color: '#0f172a',
+          textTransform: 'uppercase',
+          letterSpacing: '0.06em',
+          margin: '0 0 10px 0'
+        }}>
+          {config.certificateTitle}
+        </h1>
+        
+        <p style={{
+          fontSize: 'clamp(0.8rem, 2.2vw, 0.92rem)',
+          color: '#475569',
+          margin: '0 0 10px 0'
+        }}>
+          {config.awardText}
+        </p>
+
+        <h2 style={{
+          fontFamily: "'Great Vibes', 'Brush Script MT', cursive",
+          fontSize: 'clamp(2.4rem, 7vw, 3.6rem)',
+          fontWeight: 400,
+          color: '#0f172a',
+          margin: '0 0 12px 0',
+          borderBottom: '2px solid #d4af37',
+          paddingBottom: '2px',
+          paddingLeft: '16px',
+          paddingRight: '16px',
+          maxWidth: '90%',
+          wordBreak: 'break-word',
+          lineHeight: '1.1'
+        }}>
+          {userName || 'Your Name'}
+        </h2>
+
+        <div style={{
+          fontSize: 'clamp(0.8rem, 2.2vw, 0.92rem)',
+          color: '#334155',
+          margin: '0 0 14px 0',
+          maxWidth: '88%',
+          lineHeight: '1.45'
+        }}>
+          {config.completionText}<br/>
+          <strong>{config.courseName}</strong>
+        </div>
+
+        <div style={{
+          background: '#f8fafc',
+          border: '1px solid #e2e8f0',
+          borderRadius: '8px',
+          padding: '10px 16px',
+          marginBottom: '20px', 
+          fontStyle: 'italic',
+          color: '#475569',
+          fontSize: 'clamp(0.75rem, 2vw, 0.85rem)',
+          fontFamily: "Georgia, 'Times New Roman', serif",
+          maxWidth: '92%'
+        }}>
+          {config.quote}
+        </div>
+
+        {/* Footer info grid */}
+        <div style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          justifyContent: 'space-around',
+          alignItems: 'flex-end',
+          gap: '12px',
+          width: '100%',
+          marginBottom: '12px'
+        }}>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', minWidth: '100px' }}>
+            <div style={{
+              fontFamily: "'Great Vibes', 'Brush Script MT', cursive",
+              fontSize: 'clamp(1.2rem, 3vw, 1.5rem)',
+              color: '#0f172a',
+              borderBottom: '1px solid #cbd5e1',
+              paddingBottom: '2px',
+              marginBottom: '4px',
+              width: '100px',
+              lineHeight: '1'
+            }}>
+              MantraCare
+            </div>
+            <span style={{ fontSize: '0.62rem', color: '#64748b', textTransform: 'uppercase' }}>
+              Authorized By
+            </span>
+            <span style={{ fontSize: '0.7rem', color: '#0f172a', fontWeight: 500 }}>
+              {config.authorizedBy}
+            </span>
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', minWidth: '100px' }}>
+            <div style={{
+              fontSize: 'clamp(0.7rem, 2vw, 0.82rem)',
+              color: '#0f172a',
+              fontFamily: 'monospace',
+              borderBottom: '1px solid #cbd5e1',
+              paddingBottom: '2px',
+              marginBottom: '4px',
+              width: '100px'
+            }}>
+              {certificateId}
+            </div>
+            <span style={{ fontSize: '0.62rem', color: '#64748b', textTransform: 'uppercase' }}>
+              Certificate ID
+            </span>
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', minWidth: '100px' }}>
+            <div style={{
+              fontSize: 'clamp(0.7rem, 2vw, 0.82rem)',
+              color: '#0f172a',
+              borderBottom: '1px solid #cbd5e1',
+              paddingBottom: '2px',
+              marginBottom: '4px',
+              width: '100px'
+            }}>
+              {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+            </div>
+            <span style={{ fontSize: '0.62rem', color: '#64748b', textTransform: 'uppercase' }}>
+              Date of Completion
+            </span>
+          </div>
+        </div>
+
+        <div style={{ fontSize: '0.58rem', color: '#94a3b8' }}>
+          {config.footer}
         </div>
       </div>
 
+      {/* Verified Seal Badge */}
+      <div style={{
+        position: 'absolute',
+        bottom: '20px',
+        right: '20px',
+        width: 'clamp(52px, 10vw, 70px)',
+        height: 'clamp(52px, 10vw, 70px)',
+        borderRadius: '50%',
+        background: '#ffffff',
+        border: '2px solid #1e40af',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        boxShadow: '0 4px 10px rgba(0,0,0,0.05)',
+        zIndex: 10
+      }}>
+        <ShieldCheck size={16} color="#1e40af" />
+        <span style={{ fontSize: '0.4rem', fontWeight: 800, color: '#1e40af' }}>VERIFIED</span>
+      </div>
     </div>
   );
 };
@@ -502,21 +711,39 @@ export default function CertificateDownloadPage({ onBack, certificateConfig, onD
 
           <main style={{
             flex: 1,
-            padding: '40px 24px',
-            background: '#1e293b', // Dark background to make certificate pop
+            padding: '24px 16px 40px',
+            background: '#1e293b',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            overflowX: 'hidden'
+            width: '100%',
+            boxSizing: 'border-box'
           }}>
-            <div style={{
-              width: '100%',
-              maxWidth: '1000px',
-              boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)'
-            }}>
-              <PremiumCertificate userName={userName} innerRef={certificateRef} certificateId={certificateId} config={config} />
-            </div>
+            <OnScreenCertificatePreview 
+              userName={userName} 
+              certificateId={certificateId} 
+              config={config} 
+            />
           </main>
+
+          {/* Off-screen fixed 900px landscape certificate for HD PNG capture */}
+          <div style={{
+            position: 'fixed',
+            left: '-9999px',
+            top: '-9999px',
+            width: '900px',
+            height: '650px',
+            overflow: 'hidden',
+            pointerEvents: 'none',
+            zIndex: -9999
+          }}>
+            <PremiumCertificate 
+              userName={userName} 
+              innerRef={certificateRef} 
+              certificateId={certificateId} 
+              config={config} 
+            />
+          </div>
         </>
       )}
     </div>

@@ -150,14 +150,12 @@ export default function SupportHotlineLessonPage({ onBack }) {
 
           {/* RIGHT: Interest Form & Benefits Callout */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-            <div style={{ background: '#ffffff', borderRadius: '20px', padding: '28px', border: '1px solid #eef0f3', boxShadow: '0 4px 20px rgba(0,0,0,0.03)' }}>
-              <InterestForm 
-                initiative="Support Hotline" 
-                onSuccess={handleActionComplete} 
-                title="Apply to be a Responder"
-                description="Complete this form to express your interest in joining the hotline team."
-              />
-            </div>
+            <InterestForm 
+              initiative="Support Hotline" 
+              onSuccess={handleActionComplete} 
+              title="Apply to be a Responder"
+              description="Complete this form to express your interest in joining the hotline team."
+            />
 
             <div style={{ background: '#f3e8ff', borderRadius: '16px', border: '1px solid #e9d5ff', padding: '18px', display: 'flex', gap: '14px', alignItems: 'flex-start' }}>
               <div style={{ color: '#9333ea', flexShrink: 0, marginTop: '2px' }}>

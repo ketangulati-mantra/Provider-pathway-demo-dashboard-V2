@@ -58,43 +58,44 @@ export default function InterestForm({
 
   return (
     <div style={{
-      background: '#ffffff', borderRadius: '24px', padding: '40px',
-      border: '1px solid #e2e8f0', boxShadow: '0 8px 32px rgba(0,0,0,0.04)'
+      background: '#ffffff', borderRadius: '20px', padding: '24px',
+      border: '1px solid #e2e8f0', boxShadow: '0 4px 20px rgba(0,0,0,0.03)',
+      width: '100%', boxSizing: 'border-box'
     }}>
       {!isSuccess ? (
         <>
-          <h2 style={{ fontFamily: 'var(--font-heading)', fontWeight: 800, fontSize: '1.5rem', margin: '0 0 8px', color: '#0f172a' }}>{title}</h2>
-          <p style={{ color: '#64748b', marginBottom: '32px' }}>{description}</p>
+          <h2 style={{ fontFamily: 'var(--font-heading)', fontWeight: 800, fontSize: '1.35rem', margin: '0 0 8px', color: '#0f172a' }}>{title}</h2>
+          <p style={{ color: '#64748b', marginBottom: '24px', fontSize: '0.9rem', lineHeight: '1.5' }}>{description}</p>
           
-          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '18px', width: '100%', boxSizing: 'border-box' }}>
             
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              <label style={{ fontSize: '0.9rem', fontWeight: 600, color: '#334155' }}>Initiative</label>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+              <label style={{ fontSize: '0.88rem', fontWeight: 600, color: '#334155' }}>Initiative</label>
               <input 
                 type="text" 
                 value={initiative} 
                 disabled 
                 style={{ 
-                  padding: '14px 16px', borderRadius: '12px', border: '1px solid #cbd5e1', 
-                  outline: 'none', background: '#f1f5f9', fontSize: '0.95rem', color: '#475569',
-                  cursor: 'not-allowed' 
+                  padding: '12px 14px', borderRadius: '10px', border: '1px solid #cbd5e1', 
+                  outline: 'none', background: '#f1f5f9', fontSize: '0.9rem', color: '#475569',
+                  cursor: 'not-allowed', width: '100%', boxSizing: 'border-box' 
                 }} 
               />
             </div>
 
-            <div className="academy-grid-2" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                <label style={{ fontSize: '0.9rem', fontWeight: 600, color: '#334155' }}>Full Name</label>
-                <input type="text" required placeholder="Your Full Name" style={{ padding: '14px 16px', borderRadius: '12px', border: '1px solid #cbd5e1', outline: 'none', background: '#f8fafc', fontSize: '0.95rem', color: '#0f172a' }} />
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '14px', width: '100%', boxSizing: 'border-box' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                <label style={{ fontSize: '0.88rem', fontWeight: 600, color: '#334155' }}>Full Name</label>
+                <input type="text" required placeholder="Your Full Name" style={{ padding: '12px 14px', borderRadius: '10px', border: '1px solid #cbd5e1', outline: 'none', background: '#f8fafc', fontSize: '0.9rem', color: '#0f172a', width: '100%', boxSizing: 'border-box' }} />
               </div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                <label style={{ fontSize: '0.9rem', fontWeight: 600, color: '#334155' }}>Email Address</label>
-                <input type="email" required value={email} onChange={(e) => setEmail(e.target.value.replace(/\s/g, ''))} onBlur={validateEmail} placeholder="Email Address" style={{ padding: '14px 16px', borderRadius: '12px', border: '1px solid #cbd5e1', outline: 'none', background: '#f8fafc', fontSize: '0.95rem', color: '#0f172a' }} />
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                <label style={{ fontSize: '0.88rem', fontWeight: 600, color: '#334155' }}>Email Address</label>
+                <input type="email" required value={email} onChange={(e) => setEmail(e.target.value.replace(/\s/g, ''))} onBlur={validateEmail} placeholder="Email Address" style={{ padding: '12px 14px', borderRadius: '10px', border: '1px solid #cbd5e1', outline: 'none', background: '#f8fafc', fontSize: '0.9rem', color: '#0f172a', width: '100%', boxSizing: 'border-box' }} />
               </div>
             </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              <label style={{ fontSize: '0.9rem', fontWeight: 600, color: '#334155' }}>Phone Number</label>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+              <label style={{ fontSize: '0.88rem', fontWeight: 600, color: '#334155' }}>Phone Number</label>
               <input 
                 type="tel" 
                 inputMode="tel" 
@@ -104,11 +105,11 @@ export default function InterestForm({
                 onChange={(e) => setPhone(e.target.value.replace(/[^\d\s\+\-\(\)]/g, ''))} 
                 onBlur={validatePhone} 
                 placeholder="Phone Number (e.g. +1 555-555-5555)" 
-                style={{ padding: '14px 16px', borderRadius: '12px', border: '1px solid #cbd5e1', outline: 'none', background: '#f8fafc', fontSize: '0.95rem', color: '#0f172a' }} 
+                style={{ padding: '12px 14px', borderRadius: '10px', border: '1px solid #cbd5e1', outline: 'none', background: '#f8fafc', fontSize: '0.9rem', color: '#0f172a', width: '100%', boxSizing: 'border-box' }} 
               />
             </div>
 
-            <Button variant="primary" type="submit" disabled={isSubmitting} style={{ padding: '16px', marginTop: '8px', fontSize: '1rem', background: '#0284c7' }}>
+            <Button variant="primary" type="submit" disabled={isSubmitting} style={{ padding: '14px', marginTop: '6px', fontSize: '0.95rem', background: '#0284c7', width: '100%', boxSizing: 'border-box' }}>
               {isSubmitting ? 'Submitting...' : buttonText}
             </Button>
           </form>

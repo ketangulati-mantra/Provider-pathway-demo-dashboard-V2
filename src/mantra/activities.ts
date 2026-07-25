@@ -228,7 +228,7 @@ export const activities: Activity[] = [
   {
     lessonId: 'refer-services',
     activityId: '',
-    services: ['therapy', 'psychiatry', 'diet', 'physiotherapy', 'dermatology', 'coaching', 'fitness'],
+    services: ['*'],
     title: 'Refer Other Services & Earn',
     rewardPoints: 10,
     estimatedDuration: '2 min',
@@ -377,23 +377,221 @@ export const activities: Activity[] = [
     rewardPoints: 20,
     estimatedDuration: '2 min',
     route: '/task/yoga-certificate'
+  },
+  {
+    lessonId: 'meal-plans',
+    activityId: '',
+    services: ['diet'],
+    title: 'Build Personalized Meal Plans',
+    rewardPoints: 10,
+    estimatedDuration: '5 min',
+    route: '/meal-plans'
+  },
+  {
+    lessonId: 'diet-auto-responses',
+    activityId: '',
+    services: ['diet'],
+    title: 'Auto Responses To Improve Diet',
+    rewardPoints: 5,
+    estimatedDuration: '2 min',
+    route: '/task/diet-auto-responses'
+  },
+  {
+    lessonId: 'diet-challenges',
+    activityId: '',
+    services: ['diet'],
+    title: 'Challenges To Motivate Diet & Nutrition',
+    rewardPoints: 5,
+    estimatedDuration: '3 min',
+    route: '/task/diet-challenges'
+  },
+  {
+    lessonId: 'physio-challenges',
+    activityId: '',
+    services: ['physiotherapy'],
+    title: 'Challenges To Motivate Physical Recovery',
+    rewardPoints: 5,
+    estimatedDuration: '3 min',
+    route: '/task/physio-challenges'
+  },
+  {
+    lessonId: 'diet-expectations',
+    activityId: '',
+    services: ['diet'],
+    title: 'Expectations From a Dietitian',
+    rewardPoints: 5,
+    estimatedDuration: '3 min',
+    route: '/task/diet-expectations'
+  },
+  {
+    lessonId: 'team-chat-room',
+    activityId: '',
+    services: ['diet', 'fitness'],
+    title: 'How to use the Team Chat Room for Comprehensive Plans',
+    rewardPoints: 5,
+    estimatedDuration: '3 min',
+    route: '/task/team-chat-room'
+  },
+  {
+    lessonId: 'diet-certificate',
+    activityId: '',
+    services: ['diet'],
+    title: 'Download Your Diet Provider Pathway Certificate',
+    rewardPoints: 20,
+    estimatedDuration: '2 min',
+    route: '/task/diet-certificate'
+  },
+  {
+    lessonId: 'physio-how-it-works',
+    activityId: '',
+    services: ['physiotherapy'],
+    title: 'How PhysioMantra Works',
+    rewardPoints: 10,
+    estimatedDuration: '3 min',
+    route: '/task/physio-how-it-works'
+  },
+  {
+    lessonId: 'physio-exercise-library',
+    activityId: '',
+    services: ['physiotherapy'],
+    title: 'Reviewing the Exercise Library',
+    rewardPoints: 5,
+    estimatedDuration: '3 min',
+    route: '/task/physio-exercise-library'
+  },
+  {
+    lessonId: 'physio-tools',
+    activityId: '',
+    services: ['physiotherapy'],
+    title: 'Additional Tools & Features for Personalized Recovery',
+    rewardPoints: 5,
+    estimatedDuration: '3 min',
+    route: '/task/physio-tools'
+  },
+  {
+    lessonId: 'physio-nudging',
+    activityId: '',
+    services: ['physiotherapy'],
+    title: 'Nudging Clients to Practice Home-Exercise Programs (HEP)',
+    rewardPoints: 5,
+    estimatedDuration: '3 min',
+    route: '/task/physio-nudging'
+  },
+  {
+    lessonId: 'physio-certificate',
+    activityId: '',
+    services: ['physiotherapy'],
+    title: 'Download Your Physio Provider Pathway Certificate',
+    rewardPoints: 0,
+    estimatedDuration: '1 min',
+    route: '/task/physio-certificate'
+  },
+  {
+    lessonId: 'women-wellness-plan-guide',
+    activityId: '',
+    services: ['women_wellness', 'diet'],
+    title: 'Guide to creating plans for PCOS, menopause, maternity, or hormonal balance',
+    rewardPoints: 5,
+    estimatedDuration: '3 min',
+    route: '/task/women-wellness-plan-guide'
+  },
+  {
+    lessonId: 'women-wellness-resources',
+    activityId: '',
+    services: ['women_wellness'],
+    title: 'Sharing specialized resources',
+    rewardPoints: 5,
+    estimatedDuration: '3 min',
+    route: '/task/women-wellness-resources'
+  },
+  {
+    lessonId: 'women-wellness-sensitive-discussions',
+    activityId: '',
+    services: ['women_wellness'],
+    title: 'Tips for handling sensitive women\'s health discussions on the platform',
+    rewardPoints: 5,
+    estimatedDuration: '3 min',
+    route: '/task/women-wellness-sensitive-discussions'
+  },
+  {
+    lessonId: 'coach-accountability',
+    activityId: '',
+    services: ['coaching'],
+    title: 'Using progress check-ins and accountability reminders on the app via chat',
+    rewardPoints: 5,
+    estimatedDuration: '3 min',
+    route: '/task/coach-accountability'
+  },
+  {
+    lessonId: 'coach-certificate',
+    activityId: '',
+    services: ['coaching'],
+    title: 'Download Your Coach Provider Pathway Certificate',
+    rewardPoints: 0,
+    estimatedDuration: '1 min',
+    route: '/task/coach-certificate'
+  },
+  {
+    lessonId: 'doctor-prescription',
+    activityId: '',
+    services: ['psychiatry', 'dermatology'],
+    title: 'How to create a prescription in the app',
+    rewardPoints: 5,
+    estimatedDuration: '3 min',
+    route: '/task/doctor-prescription'
+  },
+  {
+    lessonId: 'doctor-international-clients',
+    activityId: '',
+    services: ['psychiatry', 'dermatology'],
+    title: 'Clients from Other Countries',
+    rewardPoints: 5,
+    estimatedDuration: '3 min',
+    route: '/task/doctor-international-clients'
+  },
+  {
+    lessonId: 'doctor-video-consult',
+    activityId: '',
+    services: ['psychiatry', 'dermatology'],
+    title: 'How to provide an efficient initial video consult using the app (history, exam, advice).',
+    rewardPoints: 5,
+    estimatedDuration: '3 min',
+    route: '/task/doctor-video-consult'
+  },
+  {
+    lessonId: 'doctor-followup-nudging',
+    activityId: '',
+    services: ['psychiatry', 'dermatology'],
+    title: 'Tracking follow-up schedules and nudging for compliance (appointments, tests).',
+    rewardPoints: 5,
+    estimatedDuration: '3 min',
+    route: '/task/doctor-followup-nudging'
+  },
+  {
+    lessonId: 'doctor-certificate',
+    activityId: '',
+    services: ['psychiatry', 'dermatology'],
+    title: 'Download Your Doctor Provider Pathway Certificate',
+    rewardPoints: 0,
+    estimatedDuration: '1 min',
+    route: '/task/doctor-certificate'
   }
 ];
 
 /**
  * Filter all registered activities by service context.
- * If service is 'all' or '*', returns all activities.
- * Otherwise returns activities matching wildcards ('*') or specific service inclusion.
+ * - If targetService is 'all' or '*', returns ONLY activities common to ALL services (services includes '*').
+ * - Otherwise, returns ONLY activities specific to the target service (excluding '*' common activities).
  */
 export const getAvailableActivities = (targetService?: string): Activity[] => {
   const service = normalizeService(targetService || getCurrentService());
 
   if (service === 'all' || service === '*') {
-    return [...activities];
+    return activities.filter(activity => activity.services.includes('*'));
   }
 
   return activities.filter(activity =>
-    activity.services.includes('*') ||
+    !activity.services.includes('*') &&
     activity.services.map(s => normalizeService(s)).includes(service)
   );
 };

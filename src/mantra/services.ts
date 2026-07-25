@@ -12,7 +12,8 @@ export const SUPPORTED_SERVICES = [
   'physiotherapy',
   'dermatology',
   'coaching',
-  'fitness'
+  'fitness',
+  'women_wellness'
 ] as const;
 
 export type ServiceType = string;
@@ -29,7 +30,12 @@ const SERVICE_ALIAS_MAP: Record<string, string> = {
   psychiatrist: 'psychiatry',
   physiotherapist: 'physiotherapy',
   dermatologist: 'dermatology',
-  coach: 'coaching'
+  coach: 'coaching',
+  doctor: 'psychiatry',
+  doctors: 'psychiatry',
+  'women-wellness': 'women_wellness',
+  women_health: 'women_wellness',
+  'women-health': 'women_wellness'
 };
 
 /**

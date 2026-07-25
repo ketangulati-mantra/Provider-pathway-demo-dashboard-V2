@@ -41,6 +41,28 @@ import YogaReferServicesLessonPage from './YogaReferServicesLessonPage';
 import YogaMarketProfileLessonPage from './YogaMarketProfileLessonPage';
 import YogaCertificatePage from './YogaCertificatePage';
 import ProfileVerificationLessonPage from './ProfileVerificationLessonPage';
+import MealPlansLessonPage from './MealPlansLessonPage';
+import DietAutoResponsesLessonPage from './DietAutoResponsesLessonPage';
+import DietChallengesLessonPage from './DietChallengesLessonPage';
+import PhysioChallengesLessonPage from './PhysioChallengesLessonPage';
+import DietExpectationsLessonPage from './DietExpectationsLessonPage';
+import TeamChatRoomLessonPage from './TeamChatRoomLessonPage';
+import DietCertificatePage from './DietCertificatePage';
+import PhysioHowItWorksLessonPage from './PhysioHowItWorksLessonPage';
+import PhysioExerciseLibraryLessonPage from './PhysioExerciseLibraryLessonPage';
+import PhysioToolsLessonPage from './PhysioToolsLessonPage';
+import PhysioNudgingLessonPage from './PhysioNudgingLessonPage';
+import PhysioCertificatePage from './PhysioCertificatePage';
+import WomenWellnessPlanGuideLessonPage from './WomenWellnessPlanGuideLessonPage';
+import WomenWellnessResourcesLessonPage from './WomenWellnessResourcesLessonPage';
+import WomenWellnessSensitiveDiscussionsLessonPage from './WomenWellnessSensitiveDiscussionsLessonPage';
+import CoachAccountabilityLessonPage from './CoachAccountabilityLessonPage';
+import CoachCertificatePage from './CoachCertificatePage';
+import DoctorPrescriptionLessonPage from './DoctorPrescriptionLessonPage';
+import DoctorInternationalClientsLessonPage from './DoctorInternationalClientsLessonPage';
+import DoctorVideoConsultLessonPage from './DoctorVideoConsultLessonPage';
+import DoctorFollowUpNudgingLessonPage from './DoctorFollowUpNudgingLessonPage';
+import DoctorCertificatePage from './DoctorCertificatePage';
 
 /**
  * Route-to-Component registry.
@@ -48,6 +70,29 @@ import ProfileVerificationLessonPage from './ProfileVerificationLessonPage';
  * Can specify default Component or service-specific overrides.
  */
 const ROUTE_VIEW_REGISTRY = {
+  '/meal-plans': { default: MealPlansLessonPage },
+  '/task/meal-plans': { default: MealPlansLessonPage },
+  '/task/diet-auto-responses': { default: DietAutoResponsesLessonPage },
+  '/task/diet-challenges': { default: DietChallengesLessonPage },
+  '/task/physio-challenges': { default: PhysioChallengesLessonPage },
+  '/task/diet-expectations': { default: DietExpectationsLessonPage },
+  '/task/team-chat-room': { default: TeamChatRoomLessonPage },
+  '/task/diet-certificate': { default: DietCertificatePage },
+  '/task/physio-how-it-works': { default: PhysioHowItWorksLessonPage },
+  '/task/physio-exercise-library': { default: PhysioExerciseLibraryLessonPage },
+  '/task/physio-tools': { default: PhysioToolsLessonPage },
+  '/task/physio-nudging': { default: PhysioNudgingLessonPage },
+  '/task/physio-certificate': { default: PhysioCertificatePage },
+  '/task/women-wellness-plan-guide': { default: WomenWellnessPlanGuideLessonPage },
+  '/task/women-wellness-resources': { default: WomenWellnessResourcesLessonPage },
+  '/task/women-wellness-sensitive-discussions': { default: WomenWellnessSensitiveDiscussionsLessonPage },
+  '/task/coach-accountability': { default: CoachAccountabilityLessonPage },
+  '/task/coach-certificate': { default: CoachCertificatePage },
+  '/task/doctor-prescription': { default: DoctorPrescriptionLessonPage },
+  '/task/doctor-international-clients': { default: DoctorInternationalClientsLessonPage },
+  '/task/doctor-video-consult': { default: DoctorVideoConsultLessonPage },
+  '/task/doctor-followup-nudging': { default: DoctorFollowUpNudgingLessonPage },
+  '/task/doctor-certificate': { default: DoctorCertificatePage },
   '/task/introduction': { default: IntroductionLessonPage },
   '/task/mobile-app': { default: MobileAppLessonPage },
   '/task/using-mantra': { default: UsingMantraLessonPage },
@@ -63,7 +108,7 @@ const ROUTE_VIEW_REGISTRY = {
   '/task/therapy-notes': { default: TherapyNotesLessonPage },
   '/task/couple-therapy': { default: CoupleTherapyLessonPage },
   '/task/creating-pathway': { default: CreatingPathwayLessonPage, yoga: YogaPathwayLessonPage },
-  '/task/canned-responses': { default: CannedResponsesLessonPage },
+  '/task/canned-responses': { default: CannedResponsesLessonPage, diet: DietAutoResponsesLessonPage },
   '/task/mantra-assessments': { default: MantraAssessmentsLessonPage },
   '/task/support-hotline': { default: SupportHotlineLessonPage },
   '/task/corporate-eap': { default: CorporateEapLessonPage },
