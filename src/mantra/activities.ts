@@ -202,10 +202,19 @@ export const activities: Activity[] = [
     lessonId: 'campus-awareness',
     activityId: '',
     services: ['therapy', 'listener', 'psychiatry'],
-    title: 'Campus Mental Health Awareness',
-    rewardPoints: 10,
+    title: 'Campus Ambassador Program',
+    rewardPoints: 50,
     estimatedDuration: '2 min',
     route: '/task/campus-awareness'
+  },
+  {
+    lessonId: 'campus-ambassador-learning',
+    activityId: '',
+    services: ['therapy', 'listener', 'psychiatry'],
+    title: 'Campus Ambassador Learning',
+    rewardPoints: 50,
+    estimatedDuration: '5 min',
+    route: '/task/campus-ambassador-learning'
   },
   {
     lessonId: 'fundraising',
