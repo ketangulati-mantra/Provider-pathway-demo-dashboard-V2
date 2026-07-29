@@ -6,14 +6,17 @@ import DeveloperLessonsPage from './views/DeveloperLessonsPage';
 import ErrorBoundary from './components/ErrorBoundary';
 
 function App() {
-  const basePath = '/provider_pathways';
+  // Dynamic base path support for root (Vercel/local) or subfolder (/provider_pathways) deployments
+  const envBase = (import.meta.env.BASE_URL || '/').replace(/\/$/, '');
 
   const getPath = () => {
     let p = window.location.pathname;
-    if (p.startsWith(basePath)) {
-      p = p.slice(basePath.length) || '/';
+    if (envBase && p.startsWith(envBase)) {
+      p = p.slice(envBase.length) || '/';
+    } else if (p.startsWith('/provider_pathways')) {
+      p = p.slice('/provider_pathways'.length) || '/';
     }
-    return p;
+    return p || '/';
   };
 
   const [currentPath, setCurrentPath] = useState(getPath());
@@ -31,7 +34,8 @@ function App() {
   }, []);
 
   const navigate = (path) => {
-    const fullPath = path === '/' ? basePath : (basePath + path).replace('//', '/');
+    const activeBase = envBase || (window.location.pathname.startsWith('/provider_pathways') ? '/provider_pathways' : '');
+    const fullPath = path === '/' ? (activeBase || '/') : ((activeBase + path).replace('//', '/'));
     const targetUrl = preserveQueryParams(fullPath);
     window.history.replaceState(null, '', targetUrl);
     setCurrentPath(path);
