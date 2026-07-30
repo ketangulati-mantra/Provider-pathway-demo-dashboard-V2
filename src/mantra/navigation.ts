@@ -30,21 +30,55 @@ export const preserveQueryParams = (targetPath: string): string => {
 };
 
 /**
- * Handles back routing. Falls back to home page/dev index if no callback is supplied.
+ * Universal Exit / Back button handler for production embedding contexts:
+ * 1. React Native WebView inside mobile app
+ * 2. iframe inside web.mantracare.com
+ * 3. Standalone browser
+ */
+export const handleExit = () => {
+  if (typeof window === 'undefined') return;
+
+  // 1. React Native WebView
+  if ((window as any).ReactNativeWebView) {
+    (window as any).ReactNativeWebView.postMessage(
+      JSON.stringify({ action: "exit" })
+    );
+    return;
+  }
+
+  // 2. iframe inside provider.mantracare.com
+  if (window.parent !== window) {
+    window.parent.postMessage(
+      { action: "exit" },
+      "https://provider.mantracare.com"
+    );
+    return;
+  }
+
+  // 3. Standalone browser
+  window.location.href = "https://provider.mantracare.com";
+};
+
+/**
+ * Handles back routing. Navigates to Developer Dashboard in dev mode.
  */
 export const goBack = (onBackCallback?: () => void) => {
   if (onBackCallback) {
     onBackCallback();
   } else {
-    window.location.replace(preserveQueryParams(MANTRA_CONFIG.dashboardUrl));
+    goToDashboard();
   }
 };
 
 /**
- * Redirects the browser directly to the Laravel dashboard workspace while preserving query context.
+ * Redirects back to Developer Dashboard in dev mode, or handles exit in production.
  */
 export const goToDashboard = () => {
-  window.location.replace(preserveQueryParams(MANTRA_CONFIG.dashboardUrl));
+  if (MANTRA_CONFIG.devMode) {
+    goToLesson('/dev');
+  } else {
+    handleExit();
+  }
 };
 
 /**
@@ -58,8 +92,7 @@ export const goToLesson = (route: string) => {
 };
 
 /**
- * Controls completion redirection actions, linking back to Laravel dashboard
- * or returning to home depending on configuration.
+ * Controls completion redirection actions.
  */
 export const redirectAfterCompletion = (lessonId: string, onBackCallback?: () => void) => {
   goToDashboard();
