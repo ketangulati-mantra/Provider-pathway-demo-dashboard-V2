@@ -208,15 +208,6 @@ export const activities: Activity[] = [
     route: '/task/campus-awareness'
   },
   {
-    lessonId: 'campus-ambassador-learning',
-    activityId: '',
-    services: ['therapy', 'listener', 'psychiatry'],
-    title: 'Campus Ambassador Learning',
-    rewardPoints: 50,
-    estimatedDuration: '5 min',
-    route: '/task/campus-ambassador-learning'
-  },
-  {
     lessonId: 'fundraising',
     activityId: '',
     services: ['*'],

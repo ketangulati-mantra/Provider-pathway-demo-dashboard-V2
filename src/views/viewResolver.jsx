@@ -21,7 +21,6 @@ import CorporateEapLessonPage from './CorporateEapLessonPage';
 import CommunityManagementLessonPage from './CommunityManagementLessonPage';
 import ContentCreationLessonPage from './ContentCreationLessonPage';
 import CampusAwarenessLessonPage from './CampusAwarenessLessonPage';
-import CampusAmbassadorLearningPage from './CampusAmbassadorLearningPage';
 import FundRaisingLessonPage from './FundRaisingLessonPage';
 import RecruitInternsLessonPage from './RecruitInternsLessonPage';
 import ReferServicesLessonPage from './ReferServicesLessonPage';
@@ -116,7 +115,6 @@ const ROUTE_VIEW_REGISTRY = {
   '/task/community-management': { default: CommunityManagementLessonPage },
   '/task/content-creation': { default: ContentCreationLessonPage },
   '/task/campus-awareness': { default: CampusAwarenessLessonPage },
-  '/task/campus-ambassador-learning': { default: CampusAmbassadorLearningPage },
   '/task/fundraising': { default: FundRaisingLessonPage },
   '/task/recruit-interns': { default: RecruitInternsLessonPage },
   '/task/refer-services': { default: ReferServicesLessonPage, yoga: YogaReferServicesLessonPage },
