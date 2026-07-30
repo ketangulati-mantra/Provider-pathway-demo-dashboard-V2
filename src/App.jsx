@@ -59,7 +59,7 @@ function App() {
       );
     }
 
-    const onBackCallback = MANTRA_CONFIG.devMode ? () => navigate('/dev') : undefined;
+    const onBackCallback = () => navigate('/dev');
 
     // Use viewResolver to map route and service to appropriate lesson component
     const resolvedView = resolveLessonView({

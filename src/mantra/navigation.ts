@@ -16,7 +16,7 @@ export const preserveQueryParams = (targetPath: string): string => {
   }
 
   const [pathname, targetQuery] = targetPath.split('?');
-  const currentParams = new URLSearchParams(currentSearch);
+  const currentParams = new URLSearchParams(targetQuery);
 
   if (targetQuery) {
     const targetParams = new URLSearchParams(targetQuery);
@@ -30,37 +30,14 @@ export const preserveQueryParams = (targetPath: string): string => {
 };
 
 /**
- * Universal Exit / Back button handler for production embedding contexts:
- * 1. React Native WebView inside mobile app
- * 2. iframe inside web.mantracare.com
- * 3. Standalone browser
+ * Handles exit actions by navigating back to the Developer Dashboard (/dev).
  */
 export const handleExit = () => {
-  if (typeof window === 'undefined') return;
-
-  // 1. React Native WebView
-  if ((window as any).ReactNativeWebView) {
-    (window as any).ReactNativeWebView.postMessage(
-      JSON.stringify({ action: "exit" })
-    );
-    return;
-  }
-
-  // 2. iframe inside provider.mantracare.com
-  if (window.parent !== window) {
-    window.parent.postMessage(
-      { action: "exit" },
-      "https://provider.mantracare.com"
-    );
-    return;
-  }
-
-  // 3. Standalone browser
-  window.location.href = "https://provider.mantracare.com";
+  goToLesson('/dev');
 };
 
 /**
- * Handles back routing. Navigates to Developer Dashboard in dev mode.
+ * Handles back routing, navigating back to Developer Dashboard (/dev).
  */
 export const goBack = (onBackCallback?: () => void) => {
   if (onBackCallback) {
@@ -71,14 +48,10 @@ export const goBack = (onBackCallback?: () => void) => {
 };
 
 /**
- * Redirects back to Developer Dashboard in dev mode, or handles exit in production.
+ * Redirects back to the Developer Dashboard (/dev).
  */
 export const goToDashboard = () => {
-  if (MANTRA_CONFIG.devMode) {
-    goToLesson('/dev');
-  } else {
-    handleExit();
-  }
+  goToLesson('/dev');
 };
 
 /**
