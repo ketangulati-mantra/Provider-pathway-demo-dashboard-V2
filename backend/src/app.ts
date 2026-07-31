@@ -31,6 +31,7 @@ app.use('/api/campus-program', campusRoutes);
 // Serve Frontend Static Assets in Production (supporting root and subpaths)
 const distPath = path.join(__dirname, '../../dist');
 app.use(express.static(distPath));
+app.use('/provider_pathways_dashboard_v1', express.static(distPath));
 app.use('/provider_pathways_v2_testing', express.static(distPath));
 app.use('/provider_pathways', express.static(distPath));
 
