@@ -44,7 +44,10 @@ function App() {
   }, []);
 
   const navigate = (path) => {
-    const activeBase = envBase || (window.location.pathname.startsWith('/provider_pathways') ? '/provider_pathways' : '');
+    const p = window.location.pathname;
+    const subpathMatch = p.match(/^(\/[^\/]+)/);
+    const currentSubpath = (subpathMatch && subpathMatch[1] && !subpathMatch[1].startsWith('/task')) ? subpathMatch[1] : '';
+    const activeBase = envBase || currentSubpath;
     const fullPath = path === '/' ? (activeBase || '/') : ((activeBase + path).replace('//', '/'));
     const targetUrl = preserveQueryParams(fullPath);
     window.history.replaceState(null, '', targetUrl);

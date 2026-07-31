@@ -1,8 +1,24 @@
 /**
  * Mantra Care Platform Configuration
  */
+const getDynamicApiBase = () => {
+  if (typeof window === 'undefined') return '/api';
+  const p = window.location.pathname;
+  // Match subpath slug (e.g. /provider_pathways_dashboard_v2)
+  const subpathMatch = p.match(/^(\/[^\/]+)/);
+  const prefix = (subpathMatch && subpathMatch[1] && subpathMatch[1] !== '/api') ? subpathMatch[1] : '';
+  
+  if (import.meta.env.VITE_BACKEND_URL) {
+    return import.meta.env.VITE_BACKEND_URL;
+  }
+  
+  return import.meta.env.PROD ? `${prefix}/api` : 'http://localhost:5000';
+};
+
 export const MANTRA_CONFIG = {
-  apiBaseUrl: import.meta.env.VITE_BACKEND_URL || (import.meta.env.PROD ? '/api' : 'http://localhost:5000'),
+  get apiBaseUrl() {
+    return getDynamicApiBase();
+  },
 
   dashboardUrl: 'https://provider.mantracare.com/pathway',
 
