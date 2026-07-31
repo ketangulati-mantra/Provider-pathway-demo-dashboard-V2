@@ -27,4 +27,7 @@ jobs:
           context: .
           platforms: linux/amd64
           push: true
-          tags: bunker.mantracare.com/lovable/provider_pathways_v2_testing:1.0
+          tags: |
+            bunker.mantracare.com/lovable/provider_pathways_v2_testing:1.0
+            bunker.mantracare.com/lovable/provider_pathways_v2_testing:latest
+            bunker.mantracare.com/lovable/provider_pathways_v2_testing:${{ github.sha }}
