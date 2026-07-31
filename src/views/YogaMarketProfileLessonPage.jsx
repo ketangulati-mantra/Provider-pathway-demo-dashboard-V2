@@ -146,6 +146,9 @@ export default function YogaMarketProfileLessonPage({ onBack }) {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
             <div style={{ background: '#ffffff', borderRadius: '20px', padding: '32px', border: '1px solid #eef0f3', boxShadow: '0 4px 20px rgba(0,0,0,0.03)' }}>
               <SubmissionForm 
+                lessonId={LESSON_ID}
+                activityTitle={LESSON_TITLE}
+                submissionType="yoga_market_profile_proof"
                 onSuccess={handleActionComplete} 
                 title="Activity Submission Form" 
                 successTitle="Proof Submitted Successfully" 

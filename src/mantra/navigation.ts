@@ -30,14 +30,14 @@ export const preserveQueryParams = (targetPath: string): string => {
 };
 
 /**
- * Handles exit actions by navigating back to the Developer Dashboard (/dev).
+ * Handles exit actions by navigating back to the Dashboard (/).
  */
 export const handleExit = () => {
-  goToLesson('/dev');
+  goToLesson('/');
 };
 
 /**
- * Handles back routing, navigating back to Developer Dashboard (/dev).
+ * Handles back routing, navigating back to Dashboard (/).
  */
 export const goBack = (onBackCallback?: () => void) => {
   if (onBackCallback) {
@@ -48,10 +48,10 @@ export const goBack = (onBackCallback?: () => void) => {
 };
 
 /**
- * Redirects back to the Developer Dashboard (/dev).
+ * Redirects back to the Dashboard (/).
  */
 export const goToDashboard = () => {
-  goToLesson('/dev');
+  goToLesson('/');
 };
 
 /**
@@ -59,14 +59,10 @@ export const goToDashboard = () => {
  * automatically preserving query parameters.
  */
 export const goToLesson = (route: string) => {
-  const fullRoute = preserveQueryParams(route);
-  window.history.pushState(null, '', fullRoute);
-  window.dispatchEvent(new PopStateEvent('popstate'));
+  if (typeof window === 'undefined') return;
+  const targetUrl = preserveQueryParams(route);
+  window.history.replaceState(null, '', targetUrl);
+  window.dispatchEvent(new Event('popstate'));
 };
 
-/**
- * Controls completion redirection actions.
- */
-export const redirectAfterCompletion = (lessonId: string, onBackCallback?: () => void) => {
-  goToDashboard();
-};
+

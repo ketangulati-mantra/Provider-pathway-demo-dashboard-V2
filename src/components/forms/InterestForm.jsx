@@ -3,9 +3,13 @@ import { ShieldCheck } from 'lucide-react';
 import { useToast } from '../index';
 import { isValidEmail, isValidPhoneNumber } from '../../mantra/validation';
 import { Button } from '../index';
+import { useActivitySubmission } from '../../hooks/useActivitySubmission';
 
 export default function InterestForm({ 
   initiative,
+  lessonId = "interest-form",
+  activityTitle,
+  submissionType = "interest_application",
   onSuccess,
   title = "Interest Form",
   description = "Fill out the form below to get started.",
@@ -15,11 +19,17 @@ export default function InterestForm({
   successButtonText = "Mark Lesson as Complete"
 }) {
   const { showToast } = useToast();
+  const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
-  
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
+
+  const { submit, isSubmitting, isSuccess } = useActivitySubmission({
+    lessonId: lessonId || 'interest-form',
+    activityTitle: activityTitle || initiative || 'Interest Application',
+    submissionType: submissionType || 'interest_application',
+    successTitle,
+    successMessage,
+  });
 
   const validateEmail = () => {
     if (!email) return true;
@@ -39,7 +49,7 @@ export default function InterestForm({
     return true;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!initiative) {
       showToast('Initiative value is missing.', 'error');
@@ -47,13 +57,22 @@ export default function InterestForm({
     }
     if (!validateEmail()) return;
     if (!validatePhone()) return;
-    
-    setIsSubmitting(true);
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setIsSuccess(true);
-      showToast(successTitle, 'success');
-    }, 1200);
+
+    await submit({
+      formData: {
+        initiative,
+        fullName,
+        email,
+        phone,
+        submittedAt: new Date().toISOString()
+      }
+    });
+  };
+
+  const handleCompleteClick = () => {
+    if (onSuccess) {
+      onSuccess();
+    }
   };
 
   return (
@@ -86,11 +105,26 @@ export default function InterestForm({
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '14px', width: '100%', boxSizing: 'border-box' }}>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                 <label style={{ fontSize: '0.88rem', fontWeight: 600, color: '#334155' }}>Full Name</label>
-                <input type="text" required placeholder="Your Full Name" style={{ padding: '12px 14px', borderRadius: '10px', border: '1px solid #cbd5e1', outline: 'none', background: '#f8fafc', fontSize: '0.9rem', color: '#0f172a', width: '100%', boxSizing: 'border-box' }} />
+                <input 
+                  type="text" 
+                  required 
+                  value={fullName}
+                  onChange={(e) => setFullName(e.target.value)}
+                  placeholder="Your Full Name" 
+                  style={{ padding: '12px 14px', borderRadius: '10px', border: '1px solid #cbd5e1', outline: 'none', background: '#f8fafc', fontSize: '0.9rem', color: '#0f172a', width: '100%', boxSizing: 'border-box' }} 
+                />
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                 <label style={{ fontSize: '0.88rem', fontWeight: 600, color: '#334155' }}>Email Address</label>
-                <input type="email" required value={email} onChange={(e) => setEmail(e.target.value.replace(/\s/g, ''))} onBlur={validateEmail} placeholder="Email Address" style={{ padding: '12px 14px', borderRadius: '10px', border: '1px solid #cbd5e1', outline: 'none', background: '#f8fafc', fontSize: '0.9rem', color: '#0f172a', width: '100%', boxSizing: 'border-box' }} />
+                <input 
+                  type="email" 
+                  required 
+                  value={email} 
+                  onChange={(e) => setEmail(e.target.value.replace(/\s/g, ''))} 
+                  onBlur={validateEmail} 
+                  placeholder="Email Address" 
+                  style={{ padding: '12px 14px', borderRadius: '10px', border: '1px solid #cbd5e1', outline: 'none', background: '#f8fafc', fontSize: '0.9rem', color: '#0f172a', width: '100%', boxSizing: 'border-box' }} 
+                />
               </div>
             </div>
 
@@ -110,7 +144,7 @@ export default function InterestForm({
             </div>
 
             <Button variant="primary" type="submit" disabled={isSubmitting} style={{ padding: '14px', marginTop: '6px', fontSize: '0.95rem', background: '#0284c7', width: '100%', boxSizing: 'border-box' }}>
-              {isSubmitting ? 'Submitting...' : buttonText}
+              {isSubmitting ? 'Submitting Application...' : buttonText}
             </Button>
           </form>
         </>
@@ -121,7 +155,7 @@ export default function InterestForm({
           </div>
           <h3 style={{ fontSize: '1.5rem', fontWeight: 800, marginBottom: '12px', color: '#0f172a' }}>{successTitle}</h3>
           <p style={{ color: '#64748b', marginBottom: '32px', fontSize: '1.05rem' }}>{successMessage}</p>
-          <Button className="academy-btn-full" variant="primary" onClick={onSuccess} style={{ padding: '16px', fontSize: '1rem', background: '#0284c7' }}>
+          <Button className="academy-btn-full" variant="primary" onClick={handleCompleteClick} style={{ padding: '16px', fontSize: '1rem', background: '#0284c7' }}>
             {successButtonText}
           </Button>
         </div>

@@ -153,6 +153,9 @@ export default function RecruitInternsLessonPage({ onBack }) {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
             <div style={{ background: '#ffffff', borderRadius: '20px', padding: '28px', border: '1px solid #eef0f3', boxShadow: '0 4px 20px rgba(0,0,0,0.03)' }}>
               <SubmissionForm 
+                lessonId={LESSON_ID}
+                activityTitle={LESSON_TITLE}
+                submissionType="recruit_interns_proof"
                 onSuccess={handleActionComplete} 
                 title="Submit Referral Proof" 
                 successTitle="Proof Submitted Successfully" 

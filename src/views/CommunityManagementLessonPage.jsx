@@ -95,7 +95,12 @@ export default function CommunityManagementLessonPage({ onBack }) {
         />
 
         <section>
-          <SubmissionForm onSuccess={handleActionComplete} />
+          <SubmissionForm 
+            lessonId={LESSON_ID} 
+            activityTitle={LESSON_TITLE} 
+            submissionType="community_management_proof" 
+            onSuccess={handleActionComplete} 
+          />
         </section>
 
       </main>

@@ -1,0 +1,249 @@
+import { Request, Response, NextFunction } from 'express';
+import { submissionService } from '../services/submissionService.js';
+
+export const submissionController = {
+  async createSubmission(req: Request, res: Response, next: NextFunction) {
+    try {
+      const {
+        userId,
+        user_id,
+        service,
+        lessonId,
+        lesson_id,
+        activityTitle,
+        activity_title,
+        submissionType,
+        submission_type,
+        formData,
+        submissionData,
+        submission_data,
+      } = req.body;
+
+      const rawFormData = formData !== undefined 
+        ? formData 
+        : (submissionData !== undefined ? submissionData : submission_data);
+
+      const parsedFormData = typeof rawFormData === 'object' && rawFormData !== null ? rawFormData : { data: rawFormData };
+
+      // User ID resolution: explicit userId -> email -> fullName -> 'anonymous_user'
+      const finalUserId = String(
+        userId || 
+        user_id || 
+        parsedFormData.email || 
+        parsedFormData.fullName || 
+        'anonymous_user'
+      ).trim();
+
+      const finalLessonId = String(lessonId || lesson_id || '').trim();
+      const finalActivityTitle = String(activityTitle || activity_title || '').trim();
+      const finalSubmissionType = String(submissionType || submission_type || '').trim();
+      const finalService = String(service || parsedFormData.service || '').trim() || undefined;
+
+      const missingFields: string[] = [];
+      if (!finalLessonId) missingFields.push('lessonId');
+      if (!finalActivityTitle) missingFields.push('activityTitle');
+      if (!finalSubmissionType) missingFields.push('submissionType');
+
+      if (missingFields.length > 0) {
+        return res.status(400).json({
+          success: false,
+          error: `Missing required field(s): ${missingFields.join(', ')}`,
+        });
+      }
+
+      const submission = await submissionService.createSubmission({
+        userId: finalUserId,
+        service: finalService,
+        lessonId: finalLessonId,
+        activityTitle: finalActivityTitle,
+        submissionType: finalSubmissionType,
+        formData: parsedFormData,
+        submissionData: parsedFormData,
+      });
+
+      return res.status(201).json({
+        success: true,
+        message: 'Activity submission stored successfully',
+        data: submission,
+      });
+    } catch (error) {
+      console.error('❌ Error creating activity submission:', error);
+      next(error);
+    }
+  },
+
+  async getAllSubmissions(req: Request, res: Response, next: NextFunction) {
+    try {
+      const {
+        page,
+        limit,
+        status,
+        lessonId,
+        submissionType,
+        search,
+        sortBy,
+        order,
+      } = req.query;
+
+      const result = await submissionService.getAllSubmissions({
+        page: page ? Number(page) : undefined,
+        limit: limit ? Number(limit) : undefined,
+        status: status ? String(status) : undefined,
+        lessonId: lessonId ? String(lessonId) : undefined,
+        submissionType: submissionType ? String(submissionType) : undefined,
+        search: search ? String(search) : undefined,
+        sortBy: sortBy ? String(sortBy) : undefined,
+        order: order && String(order).toUpperCase() === 'ASC' ? 'ASC' : 'DESC',
+      });
+
+      return res.status(200).json({
+        success: true,
+        data: result.submissions,
+        pagination: result.pagination,
+      });
+    } catch (error) {
+      console.error('❌ Error getting all submissions:', error);
+      next(error);
+    }
+  },
+
+  async exportSubmissionsCSV(req: Request, res: Response, next: NextFunction) {
+    try {
+      const result = await submissionService.getAllSubmissions({ limit: 1000 });
+      const submissions = result.submissions || [];
+
+      const headers = ['Submission ID', 'User ID', 'Service', 'Lesson ID', 'Activity Title', 'Submission Type', 'Form Data', 'Proof URL', 'Submitted At'];
+      const rows = [headers.join(',')];
+
+      for (const s of submissions) {
+        const data = s.form_data || s.submission_data || {};
+        const proofUrl = data.screenshotUrl || data.imageUrl || data.fileUrl || '';
+        const formDataStr = Object.entries(data)
+          .filter(([k]) => !['screenshotUrl', 'imageUrl', 'fileUrl'].includes(k))
+          .map(([k, v]) => `${k}: ${v}`)
+          .join(' | ');
+
+        const row = [
+          `"${s.id || ''}"`,
+          `"${s.user_id || ''}"`,
+          `"${s.service || ''}"`,
+          `"${s.lesson_id || ''}"`,
+          `"${(s.activity_title || '').replace(/"/g, '""')}"`,
+          `"${s.submission_type || ''}"`,
+          `"${formDataStr.replace(/"/g, '""')}"`,
+          `"${proofUrl}"`,
+          `"${s.created_at || ''}"`
+        ];
+        rows.push(row.join(','));
+      }
+
+      res.setHeader('Content-Type', 'text/csv');
+      res.setHeader('Content-Disposition', `attachment; filename=activity_submissions_${Date.now()}.csv`);
+      return res.status(200).send(rows.join('\n'));
+    } catch (error) {
+      console.error('❌ Error exporting submissions CSV:', error);
+      next(error);
+    }
+  },
+
+  async getSubmissionById(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+      if (!id) {
+        return res.status(400).json({
+          success: false,
+          error: 'Submission id parameter is required',
+        });
+      }
+
+      const submission = await submissionService.getSubmissionById(id);
+      if (!submission) {
+        return res.status(404).json({
+          success: false,
+          error: `Submission with id '${id}' not found`,
+        });
+      }
+
+      return res.status(200).json({
+        success: true,
+        data: submission,
+      });
+    } catch (error) {
+      console.error('❌ Error getting submission by id:', error);
+      next(error);
+    }
+  },
+
+  async getSubmissionsByUser(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { userId } = req.params;
+      const targetUserId = userId || (req.params as any).providerUid;
+
+      if (!targetUserId) {
+        return res.status(400).json({
+          success: false,
+          error: 'userId parameter is required',
+        });
+      }
+
+      const submissions = await submissionService.getSubmissionsByUser(targetUserId);
+      return res.status(200).json({
+        success: true,
+        data: submissions,
+      });
+    } catch (error) {
+      console.error('❌ Error fetching activity submissions for user:', error);
+      next(error);
+    }
+  },
+
+  async reviewSubmission(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+      const { status, reviewNotes, review_notes } = req.body;
+
+      if (!id) {
+        return res.status(400).json({
+          success: false,
+          error: 'Submission id parameter is required',
+        });
+      }
+
+      if (!status) {
+        return res.status(400).json({
+          success: false,
+          error: 'status field is required (must be pending, approved, or rejected)',
+        });
+      }
+
+      const finalNotes = reviewNotes !== undefined ? reviewNotes : review_notes;
+
+      const updatedSubmission = await submissionService.reviewSubmission(id, {
+        status,
+        reviewNotes: finalNotes,
+      });
+
+      if (!updatedSubmission) {
+        return res.status(404).json({
+          success: false,
+          error: `Submission with id '${id}' not found`,
+        });
+      }
+
+      return res.status(200).json({
+        success: true,
+        message: `Submission status successfully updated to '${updatedSubmission.status}'`,
+        data: updatedSubmission,
+      });
+    } catch (error) {
+      if (error instanceof Error && error.message.includes('Invalid status')) {
+        return res.status(400).json({
+          success: false,
+          error: error.message,
+        });
+      }
+      console.error('❌ Error reviewing submission:', error);
+      next(error);
+    }
+  },
+};

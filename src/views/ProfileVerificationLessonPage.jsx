@@ -126,6 +126,8 @@ export default function ProfileVerificationLessonPage({ onBack }) {
           <div style={{ width: '100%', marginTop: '32px', paddingTop: '32px', borderTop: '1px solid #eef0f3' }}>
             <SubmissionForm 
               title="Upload Proof"
+              lessonId={LESSON_ID}
+              activityTitle={LESSON_TITLE}
               onSuccess={handleActionComplete}
             />
           </div>

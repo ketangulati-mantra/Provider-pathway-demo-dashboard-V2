@@ -87,7 +87,12 @@ export default function ContentCreationLessonPage({ onBack }) {
         </section>
 
         <section>
-          <SubmissionForm onSuccess={handleActionComplete} />
+          <SubmissionForm 
+            lessonId={LESSON_ID} 
+            activityTitle={LESSON_TITLE} 
+            submissionType="content_creation_proof" 
+            onSuccess={handleActionComplete} 
+          />
         </section>
 
       </main>

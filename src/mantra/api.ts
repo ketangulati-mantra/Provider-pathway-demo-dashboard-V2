@@ -6,7 +6,7 @@ import { getCurrentService } from './services';
  * Returns URL parameters required by the pathway webhook.
  */
 const getWebhookContext = () => {
-  const params = new URLSearchParams(window.location.search);
+  const params = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : new URLSearchParams();
 
   return {
     upaId: params.get('upa_id'),
@@ -16,7 +16,16 @@ const getWebhookContext = () => {
 };
 
 /**
- * Marks a lesson/activity as completed in Laravel.
+ * Returns the current user_id from URL query params (e.g. ?user_id=...) or localStorage.
+ */
+export const getCurrentUserId = (): string => {
+  if (typeof window === 'undefined') return 'anonymous_user';
+  const params = new URLSearchParams(window.location.search);
+  return params.get('user_id') || params.get('userId') || localStorage.getItem('mantra_user_id') || 'anonymous_user';
+};
+
+/**
+ * Marks a lesson/activity as completed in Laravel webhook.
  */
 export const completeLesson = async (lessonId: string): Promise<boolean> => {
   const activity = activities.find(a => a.lessonId === lessonId);
@@ -29,12 +38,15 @@ export const completeLesson = async (lessonId: string): Promise<boolean> => {
   const { upaId, uid, service } = getWebhookContext();
 
   if (!upaId) {
-    console.error('[Mantra API] Missing upa_id in URL.');
+    if (MANTRA_CONFIG.devMode) {
+      console.log(`[Mantra API] Dev Mode: completed activity ${lessonId} locally.`);
+      return true;
+    }
     return false;
   }
 
   if (MANTRA_CONFIG.devMode) {
-    console.log('[Mantra API] Completing activity', {
+    console.log('[Mantra API] Completing activity via webhook', {
       lessonId,
       upaId,
       uid,
@@ -50,41 +62,45 @@ export const completeLesson = async (lessonId: string): Promise<boolean> => {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        intent: 'complete_activity',
-        upa_id: Number(upaId),
-        uid: uid || undefined,
-        service
+        upa_id: upaId,
+        uid: uid,
+        lesson_id: lessonId,
+        service: service,
+        reward_points: activity.rewardPoints
       })
     });
 
-    const result = await response.json();
-
-    if (!response.ok || !result.success) {
-      console.error(
-        '[Mantra API] Webhook failed:',
-        result?.message || result
-      );
+    if (!response.ok) {
+      console.error(`[Mantra API] Webhook failed with status ${response.status}`);
       return false;
     }
 
-    if (MANTRA_CONFIG.devMode) {
-      console.log('[Mantra API] Activity completed successfully.', result);
-    }
-
     return true;
-
   } catch (error) {
-    console.error('[Mantra API] Network/Webhook Error:', error);
+    console.error('[Mantra API] Error triggering completion webhook:', error);
     return false;
   }
 };
 
 /**
- * Submits final quiz score logs to the backend.
+ * Retrieves completion status of all activities.
  */
-export const submitQuiz = async (lessonId: string, score: number, totalQuestions: number): Promise<boolean> => {
-  console.log(`[Mantra API] Quiz submitted for lesson ${lessonId}: Score ${score}/${totalQuestions}`);
-  return true;
+export const fetchUserProgress = async (): Promise<Record<string, boolean>> => {
+  const { upaId } = getWebhookContext();
+
+  if (!upaId) {
+    return {};
+  }
+
+  try {
+    const response = await fetch(`${MANTRA_CONFIG.webhookUrl}?upa_id=${upaId}`);
+    if (!response.ok) return {};
+    const data = await response.json();
+    return data.progress || {};
+  } catch (error) {
+    console.error('[Mantra API] Error fetching progress:', error);
+    return {};
+  }
 };
 
 /**
@@ -93,6 +109,134 @@ export const submitQuiz = async (lessonId: string, score: number, totalQuestions
 export const saveProgress = async (lessonId: string, progress: number): Promise<boolean> => {
   console.log(`[Mantra API] Progress auto-saved for lesson ${lessonId}: ${progress}%`);
   return true;
+};
+
+/**
+ * Submits an activity submission payload to the backend API.
+ */
+export const submitActivitySubmission = async (payload: {
+  userId?: string;
+  lessonId: string;
+  activityTitle: string;
+  submissionType: string;
+  formData: Record<string, any>;
+}): Promise<{ success: boolean; data?: any; error?: string }> => {
+  const userId = payload.userId || getCurrentUserId();
+  const service = getCurrentService();
+
+  const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
+
+  try {
+    const response = await fetch(`${backendUrl}/api/activity-submissions`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        userId,
+        lessonId: payload.lessonId,
+        activityTitle: payload.activityTitle,
+        submissionType: payload.submissionType,
+        service,
+        formData: payload.formData,
+      }),
+    });
+
+    const result = await response.json();
+
+    if (!response.ok || !result.success) {
+      console.error('[Mantra API] Activity submission failed:', result?.error || result?.message || result);
+      return { success: false, error: result?.error || result?.message || 'Submission failed' };
+    }
+
+    return { success: true, data: result.data };
+  } catch (error) {
+    console.error('[Mantra API] Network Error on submission:', error);
+    const isFetchError = error instanceof TypeError && error.message.includes('fetch');
+    return { 
+      success: false, 
+      error: isFetchError 
+        ? 'Backend server (http://localhost:5000) is offline or unreachable. Please start the backend server.' 
+        : (error instanceof Error ? error.message : 'Network error') 
+    };
+  }
+};
+
+/**
+ * Uploads a file to the backend Cloudinary upload endpoint.
+ */
+export const uploadFileToCloudinary = async (file: File): Promise<{
+  success: boolean;
+  data?: {
+    public_id: string;
+    secure_url: string;
+    originalFilename: string;
+    format: string;
+    bytes: number;
+  };
+  error?: string;
+}> => {
+  const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
+  const formData = new FormData();
+  formData.append('file', file);
+
+  try {
+    const response = await fetch(`${backendUrl}/api/uploads`, {
+      method: 'POST',
+      body: formData,
+    });
+
+    const result = await response.json();
+
+    if (!response.ok || !result.success) {
+      console.error('[Mantra API] File upload failed:', result?.error || result);
+      return { success: false, error: result?.error || 'File upload failed' };
+    }
+
+    return { success: true, data: result.data };
+  } catch (error) {
+    console.error('[Mantra API] File upload network error:', error);
+    return { success: false, error: error instanceof Error ? error.message : 'Network error' };
+  }
+};
+
+/**
+ * Fetches activity submissions list with pagination & filters.
+ */
+export const fetchAllSubmissions = async ({ page = 1, limit = 20, status = '', search = '' } = {}) => {
+  const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
+  const params = new URLSearchParams({
+    page: String(page),
+    limit: String(limit),
+    ...(status ? { status } : {}),
+    ...(search ? { search } : {})
+  });
+  
+  try {
+    const res = await fetch(`${backendUrl}/api/activity-submissions?${params}`);
+    return await res.json();
+  } catch (error) {
+    console.error('[Mantra API] Error fetching submissions:', error);
+    return { success: false, error: 'Failed to connect to backend server' };
+  }
+};
+
+/**
+ * Reviews (approves/rejects) an activity submission.
+ */
+export const reviewSubmissionStatus = async (id: string, status: string, reviewNotes: string = '') => {
+  const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
+  try {
+    const res = await fetch(`${backendUrl}/api/activity-submissions/${id}/review`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status, reviewNotes })
+    });
+    return await res.json();
+  } catch (error) {
+    console.error('[Mantra API] Error reviewing submission:', error);
+    return { success: false, error: 'Failed to update submission status' };
+  }
 };
 
 /**

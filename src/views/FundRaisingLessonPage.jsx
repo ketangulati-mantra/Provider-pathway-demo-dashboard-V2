@@ -151,6 +151,9 @@ export default function FundRaisingLessonPage({ onBack }) {
         <section>
           <InterestForm 
             initiative="Fund Raising" 
+            lessonId={LESSON_ID}
+            activityTitle={LESSON_TITLE}
+            submissionType="fundraising_pledge"
             onSuccess={handleActionComplete} 
             title="Join the Initiative"
             description="Complete this form to pledge your support and join our fundraising community."

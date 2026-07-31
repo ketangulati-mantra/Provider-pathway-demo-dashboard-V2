@@ -192,6 +192,9 @@ export default function ShareLinkedinLessonPage({ onBack }) {
           {/* RIGHT: Form Section */}
           <div style={{ background: '#ffffff', borderRadius: '20px', padding: '32px', border: '1px solid #eef0f3', boxShadow: '0 4px 20px rgba(0,0,0,0.03)' }}>
             <SubmissionForm 
+              lessonId={LESSON_ID}
+              activityTitle={LESSON_TITLE}
+              submissionType="share_linkedin_proof"
               onSuccess={handleActionComplete} 
               title="Submit Your Proof" 
               successTitle="Proof Submitted Successfully" 
