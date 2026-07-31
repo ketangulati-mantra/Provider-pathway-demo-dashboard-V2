@@ -11,8 +11,12 @@ function App() {
 
   const getPath = () => {
     let p = window.location.pathname;
-    if (envBase && p.startsWith(envBase)) {
-      p = p.slice(envBase.length) || '/';
+    const base = envBase ? envBase.replace(/\/$/, '') : '';
+    
+    if (base && p.startsWith(base)) {
+      p = p.slice(base.length) || '/';
+    } else if (p.startsWith('/provider_pathways_v2_testing')) {
+      p = p.slice('/provider_pathways_v2_testing'.length) || '/';
     } else if (p.startsWith('/provider_pathways')) {
       p = p.slice('/provider_pathways'.length) || '/';
     }
