@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { X, CheckCircle2, XCircle, HelpCircle, ExternalLink, Clock, FileText, History } from 'lucide-react';
 import { MANTRA_CONFIG } from '../../mantra';
 
-const API_BASE = MANTRA_CONFIG.apiBaseUrl || 'http://localhost:5000';
+const API_BASE = MANTRA_CONFIG.apiBaseUrl !== undefined && MANTRA_CONFIG.apiBaseUrl !== null ? MANTRA_CONFIG.apiBaseUrl : (import.meta.env.PROD ? '' : 'http://localhost:5000');
 
 export default function CampusApplicationDetailsDrawer({ isOpen, onClose, applicationId, onActionSuccess, onOpenRejectModal, onOpenRequestInfoModal }) {
   const [details, setDetails] = useState(null);

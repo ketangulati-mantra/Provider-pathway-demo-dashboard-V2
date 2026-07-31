@@ -4,7 +4,7 @@ import { X, Send, GraduationCap, Search, ChevronDown, Check } from 'lucide-react
 import SearchableSelect from '../../ui/SearchableSelect';
 import { MANTRA_CONFIG } from '../../../mantra';
 
-const API_BASE = MANTRA_CONFIG.apiBaseUrl || 'http://localhost:5000';
+const API_BASE = MANTRA_CONFIG.apiBaseUrl !== undefined && MANTRA_CONFIG.apiBaseUrl !== null ? MANTRA_CONFIG.apiBaseUrl : (import.meta.env.PROD ? '' : 'http://localhost:5000');
 
 const DISPOSABLE_DOMAINS = new Set([
   'mailinator.com', 'tempmail.com', '10minutemail.com', 'guerrillamail.com',

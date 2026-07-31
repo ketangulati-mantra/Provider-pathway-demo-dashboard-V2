@@ -9,7 +9,7 @@ import MoreInfoRequiredScreen from './MoreInfoRequiredScreen';
 import RejectedScreen from './RejectedScreen';
 import AmbassadorDashboard from './AmbassadorDashboard';
 
-const API_BASE = MANTRA_CONFIG.apiBaseUrl || 'http://localhost:5000';
+const API_BASE = MANTRA_CONFIG.apiBaseUrl !== undefined && MANTRA_CONFIG.apiBaseUrl !== null ? MANTRA_CONFIG.apiBaseUrl : (import.meta.env.PROD ? '' : 'http://localhost:5000');
 
 export default function CampusProgramController({ onBack }) {
   const [statusData, setStatusData] = useState(null);

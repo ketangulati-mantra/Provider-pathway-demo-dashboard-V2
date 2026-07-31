@@ -5,7 +5,7 @@ import RejectReasonModal from './RejectReasonModal';
 import RequestMoreInfoModal from './RequestMoreInfoModal';
 import { MANTRA_CONFIG } from '../../mantra';
 
-const API_BASE = MANTRA_CONFIG.apiBaseUrl || 'http://localhost:5000';
+const API_BASE = MANTRA_CONFIG.apiBaseUrl !== undefined && MANTRA_CONFIG.apiBaseUrl !== null ? MANTRA_CONFIG.apiBaseUrl : (import.meta.env.PROD ? '' : 'http://localhost:5000');
 
 const DEFAULT_REVIEWERS = [
   'Unassigned'

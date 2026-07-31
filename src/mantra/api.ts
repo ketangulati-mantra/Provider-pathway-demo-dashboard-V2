@@ -124,7 +124,7 @@ export const submitActivitySubmission = async (payload: {
   const userId = payload.userId || getCurrentUserId();
   const service = getCurrentService();
 
-  const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
+  const backendUrl = import.meta.env.VITE_BACKEND_URL || (import.meta.env.PROD ? '' : 'http://localhost:5000');
 
   try {
     const response = await fetch(`${backendUrl}/api/activity-submissions`, {
@@ -176,7 +176,7 @@ export const uploadFileToCloudinary = async (file: File): Promise<{
   };
   error?: string;
 }> => {
-  const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
+  const backendUrl = import.meta.env.VITE_BACKEND_URL || (import.meta.env.PROD ? '' : 'http://localhost:5000');
   const formData = new FormData();
   formData.append('file', file);
 
@@ -204,7 +204,7 @@ export const uploadFileToCloudinary = async (file: File): Promise<{
  * Fetches activity submissions list with pagination & filters.
  */
 export const fetchAllSubmissions = async ({ page = 1, limit = 20, status = '', search = '' } = {}) => {
-  const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
+  const backendUrl = import.meta.env.VITE_BACKEND_URL || (import.meta.env.PROD ? '' : 'http://localhost:5000');
   const params = new URLSearchParams({
     page: String(page),
     limit: String(limit),
@@ -225,7 +225,7 @@ export const fetchAllSubmissions = async ({ page = 1, limit = 20, status = '', s
  * Reviews (approves/rejects) an activity submission.
  */
 export const reviewSubmissionStatus = async (id: string, status: string, reviewNotes: string = '') => {
-  const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
+  const backendUrl = import.meta.env.VITE_BACKEND_URL || (import.meta.env.PROD ? '' : 'http://localhost:5000');
   try {
     const res = await fetch(`${backendUrl}/api/activity-submissions/${id}/review`, {
       method: 'PATCH',

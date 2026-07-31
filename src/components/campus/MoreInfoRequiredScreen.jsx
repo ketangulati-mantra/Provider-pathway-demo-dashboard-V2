@@ -3,7 +3,7 @@ import { AlertTriangle, Send, ArrowLeft, FileText, CheckCircle2 } from 'lucide-r
 import SearchableSelect from '../ui/SearchableSelect';
 import { MANTRA_CONFIG } from '../../mantra';
 
-const API_BASE = MANTRA_CONFIG.apiBaseUrl || 'http://localhost:5000';
+const API_BASE = MANTRA_CONFIG.apiBaseUrl !== undefined && MANTRA_CONFIG.apiBaseUrl !== null ? MANTRA_CONFIG.apiBaseUrl : (import.meta.env.PROD ? '' : 'http://localhost:5000');
 
 export default function MoreInfoRequiredScreen({ statusData, onResubmitSuccess, onBack }) {
   const application = statusData?.application || {};

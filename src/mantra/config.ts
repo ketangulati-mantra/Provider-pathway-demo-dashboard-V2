@@ -2,7 +2,7 @@
  * Mantra Care Platform Configuration
  */
 export const MANTRA_CONFIG = {
-  apiBaseUrl: 'http://localhost:5000',
+  apiBaseUrl: import.meta.env.VITE_BACKEND_URL || (import.meta.env.PROD ? '' : 'http://localhost:5000'),
 
   dashboardUrl: 'https://provider.mantracare.com/pathway',
 

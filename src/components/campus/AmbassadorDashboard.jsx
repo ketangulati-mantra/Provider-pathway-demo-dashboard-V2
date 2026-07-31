@@ -12,7 +12,7 @@ import ProgramResourcesWidget from './dashboard/ProgramResourcesWidget';
 import ProgramStatusCard from './dashboard/ProgramStatusCard';
 import { RefreshCw } from 'lucide-react';
 
-const API_BASE = MANTRA_CONFIG.apiBaseUrl || 'http://localhost:5000';
+const API_BASE = MANTRA_CONFIG.apiBaseUrl !== undefined && MANTRA_CONFIG.apiBaseUrl !== null ? MANTRA_CONFIG.apiBaseUrl : (import.meta.env.PROD ? '' : 'http://localhost:5000');
 
 export default function AmbassadorDashboard({ onBack }) {
   const [dashboardData, setDashboardData] = useState(null);

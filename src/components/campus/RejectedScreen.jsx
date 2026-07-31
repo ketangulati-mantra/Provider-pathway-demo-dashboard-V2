@@ -3,7 +3,7 @@ import { XCircle, Mail, ArrowLeft, RefreshCw, Send, Sparkles } from 'lucide-reac
 import CampusApplicationModal from './application/CampusApplicationModal';
 import { MANTRA_CONFIG } from '../../mantra';
 
-const API_BASE = MANTRA_CONFIG.apiBaseUrl || 'http://localhost:5000';
+const API_BASE = MANTRA_CONFIG.apiBaseUrl !== undefined && MANTRA_CONFIG.apiBaseUrl !== null ? MANTRA_CONFIG.apiBaseUrl : (import.meta.env.PROD ? '' : 'http://localhost:5000');
 
 export default function RejectedScreen({ statusData, onResubmitVersionSuccess, onBack }) {
   const application = statusData?.application || {};
