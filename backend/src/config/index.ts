@@ -7,9 +7,13 @@ const __dirname = path.dirname(__filename);
 
 // Load backend-specific .env file
 dotenv.config({ path: path.resolve(__dirname, '../../.env') });
+dotenv.config({ path: path.resolve(__dirname, '../.env') });
+
+const isProd = process.env.NODE_ENV === 'production';
+const targetPort = process.env.PORT ? parseInt(process.env.PORT, 10) : (isProd ? 80 : 5000);
 
 export const config = {
-  port: process.env.PORT || 5000,
+  port: targetPort,
   databaseUrl: process.env.DATABASE_URL || '',
   nodeEnv: process.env.NODE_ENV || 'development',
   cloudinary: {

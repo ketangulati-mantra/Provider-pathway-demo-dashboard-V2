@@ -12,11 +12,11 @@ out
 .git
 .gitignore
 
-# Environment variables
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+# Environment variables (Safety first - ignore all env files in docker builds)
+.env
+.env*
+backend/.env
+backend/.env*
 
 # IDE / editor
 .vscode
