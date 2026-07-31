@@ -99,28 +99,136 @@ export async function setupDb() {
       );
     `;
 
-    await sql`ALTER TABLE activity_submissions ALTER COLUMN user_id TYPE VARCHAR(255) USING user_id::varchar;`;
-    await sql`ALTER TABLE activity_submissions ADD COLUMN IF NOT EXISTS lesson_id VARCHAR(100);`;
-    await sql`ALTER TABLE activity_submissions ADD COLUMN IF NOT EXISTS activity_title VARCHAR(255);`;
-    await sql`ALTER TABLE activity_submissions ADD COLUMN IF NOT EXISTS submission_type VARCHAR(100);`;
-    await sql`ALTER TABLE activity_submissions ADD COLUMN IF NOT EXISTS submission_data JSONB DEFAULT '{}'::jsonb;`;
-    await sql`ALTER TABLE activity_submissions ADD COLUMN IF NOT EXISTS status VARCHAR(50) DEFAULT 'pending';`;
-    await sql`ALTER TABLE activity_submissions ADD COLUMN IF NOT EXISTS review_notes TEXT;`;
-    await sql`ALTER TABLE activity_submissions ADD COLUMN IF NOT EXISTS service VARCHAR(50);`;
-    await sql`ALTER TABLE activity_submissions ADD COLUMN IF NOT EXISTS form_data JSONB DEFAULT '{}'::jsonb;`;
-    await sql`ALTER TABLE activity_submissions DROP COLUMN IF EXISTS provider_uid;`;
-    await sql`ALTER TABLE activity_submissions DROP COLUMN IF EXISTS upa_id;`;
+    // 8. Ambassador Profiles Table
+    await sql`
+      CREATE TABLE IF NOT EXISTS ambassador_profiles (
+        id BIGSERIAL PRIMARY KEY,
+        user_id VARCHAR(255) UNIQUE NOT NULL,
+        current_stage VARCHAR(50) DEFAULT 'NOT_JOINED',
+        current_step INT DEFAULT 0,
+        approval_status VARCHAR(50) DEFAULT 'none',
+        credits INT DEFAULT 0,
+        level INT DEFAULT 1,
+        referral_code VARCHAR(50) UNIQUE,
+        college_name VARCHAR(255),
+        joined_date TIMESTAMP WITH TIME ZONE,
+        status VARCHAR(50) DEFAULT 'active',
+        created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+      );
+    `;
 
-    await sql`ALTER TABLE certificate_logs ADD COLUMN IF NOT EXISTS certificate_url TEXT;`;
-    await sql`ALTER TABLE certificate_logs ADD COLUMN IF NOT EXISTS metadata JSONB DEFAULT '{}'::jsonb;`;
+    // 9. Program Learning Progress Table
+    await sql`
+      CREATE TABLE IF NOT EXISTS program_learning_progress (
+        id BIGSERIAL PRIMARY KEY,
+        user_id VARCHAR(255) NOT NULL,
+        program_id VARCHAR(100) DEFAULT 'campus_awareness',
+        module_id VARCHAR(100) NOT NULL,
+        completion_status VARCHAR(50) DEFAULT 'in_progress',
+        completed_at TIMESTAMP WITH TIME ZONE,
+        quiz_data JSONB DEFAULT '{}'::jsonb,
+        created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+        CONSTRAINT unique_user_program_module UNIQUE (user_id, program_id, module_id)
+      );
+    `;
 
-    console.log('✅ Database setup completed successfully!');
+    // 10. Credit Ledger Table
+    await sql`
+      CREATE TABLE IF NOT EXISTS credit_ledger (
+        id BIGSERIAL PRIMARY KEY,
+        user_id VARCHAR(255) NOT NULL,
+        program_id VARCHAR(100) DEFAULT 'campus_awareness',
+        amount INT NOT NULL,
+        type VARCHAR(50) NOT NULL,
+        description TEXT,
+        reference_id VARCHAR(100),
+        created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+      );
+    `;
+
+    // 11. Program Missions Table
+    await sql`
+      CREATE TABLE IF NOT EXISTS program_missions (
+        id BIGSERIAL PRIMARY KEY,
+        user_id VARCHAR(255) NOT NULL,
+        program_id VARCHAR(100) DEFAULT 'campus_awareness',
+        mission_key VARCHAR(100) NOT NULL,
+        status VARCHAR(50) DEFAULT 'assigned',
+        started_at TIMESTAMP WITH TIME ZONE,
+        completed_at TIMESTAMP WITH TIME ZONE,
+        proof_data JSONB DEFAULT '{}'::jsonb,
+        created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+        CONSTRAINT unique_user_program_mission UNIQUE (user_id, program_id, mission_key)
+      );
+    `;
+
+    // 12. Program Notifications Table
+    await sql`
+      CREATE TABLE IF NOT EXISTS program_notifications (
+        id BIGSERIAL PRIMARY KEY,
+        user_id VARCHAR(255) NOT NULL,
+        title VARCHAR(255) NOT NULL,
+        message TEXT NOT NULL,
+        read_status BOOLEAN DEFAULT FALSE,
+        created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+      );
+    `;
+
+    // 13. Program Certificates Table
+    await sql`
+      CREATE TABLE IF NOT EXISTS program_certificates (
+        id BIGSERIAL PRIMARY KEY,
+        user_id VARCHAR(255) NOT NULL,
+        program_id VARCHAR(100) DEFAULT 'campus_awareness',
+        certificate_code VARCHAR(100) UNIQUE NOT NULL,
+        certificate_url TEXT,
+        issued_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+      );
+    `;
+
+    // 14. Campus Program Applications Table
+    await sql`
+      CREATE TABLE IF NOT EXISTS campus_program_applications (
+        id BIGSERIAL PRIMARY KEY,
+        user_id VARCHAR(255) NOT NULL,
+        program_id VARCHAR(100) DEFAULT 'campus_awareness',
+        full_name VARCHAR(255),
+        email VARCHAR(255),
+        country_code VARCHAR(20) DEFAULT '+1',
+        phone VARCHAR(50),
+        college VARCHAR(255) NOT NULL,
+        course VARCHAR(255) NOT NULL,
+        year VARCHAR(50) NOT NULL,
+        city VARCHAR(255) NOT NULL,
+        motivation TEXT NOT NULL,
+        availability VARCHAR(100) NOT NULL,
+        linkedin_url TEXT,
+        instagram_url TEXT,
+        previous_experience TEXT,
+        terms_accepted BOOLEAN DEFAULT TRUE,
+        community_guidelines_accepted BOOLEAN DEFAULT TRUE,
+        application_status VARCHAR(50) DEFAULT 'submitted',
+        submitted_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+        reviewed_at TIMESTAMP WITH TIME ZONE,
+        reviewed_by VARCHAR(255),
+        admin_notes TEXT,
+        CONSTRAINT unique_user_program_app UNIQUE (user_id, program_id)
+      );
+    `;
+
+    // Ensure country_code column exists if table was previously created
+    await sql`
+      ALTER TABLE campus_program_applications 
+      ADD COLUMN IF NOT EXISTS country_code VARCHAR(20) DEFAULT '+1';
+    `;
+
+    console.log('✅ Neon DB migrations completed successfully!');
   } catch (error) {
-    console.error('❌ Error executing database setup:', error);
+    console.error('❌ Error setting up DB tables:', error);
     throw error;
   }
-}
-
-if (process.argv[1]?.endsWith('setupDb.ts') || process.argv[1]?.endsWith('setupDb.js')) {
-  setupDb().then(() => process.exit(0)).catch(() => process.exit(1));
 }

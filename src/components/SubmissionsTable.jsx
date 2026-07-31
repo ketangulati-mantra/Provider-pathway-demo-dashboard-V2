@@ -330,180 +330,154 @@ export default function SubmissionsTable() {
 
       </div>
 
-      {/* Main Operations Grid */}
+      {/* Main Operations Grid - Compact Single-View Layout */}
       <div style={{ background: '#ffffff', borderRadius: '16px', border: '1px solid #e2e8f0', boxShadow: '0 4px 16px rgba(0,0,0,0.03)', overflow: 'hidden' }}>
-        <div style={{ overflowX: 'auto' }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.85rem' }}>
-            <thead>
-              <tr style={{ background: '#f8fafc', borderBottom: '1px solid #e2e8f0', color: '#475569', fontWeight: 800, textTransform: 'uppercase', fontSize: '0.72rem', letterSpacing: '0.06em' }}>
-                <th style={{ padding: '14px 16px', whiteSpace: 'nowrap' }}>User / Email</th>
-                <th style={{ padding: '14px 16px', whiteSpace: 'nowrap' }}>Service</th>
-                
-                {/* Dynamically Generated Form Data Columns */}
-                {dynamicKeys.map(key => (
-                  <th key={key} style={{ padding: '14px 16px', whiteSpace: 'nowrap' }}>
-                    {formatHeaderLabel(key)}
-                  </th>
-                ))}
+        <table style={{ width: '100%', tableLayout: 'fixed', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.82rem' }}>
+          <thead>
+            <tr style={{ background: '#043263', borderBottom: '1px solid #03254c', color: '#ffffff', fontWeight: 800, textTransform: 'uppercase', fontSize: '0.74rem', letterSpacing: '0.04em' }}>
+              <th style={{ padding: '12px 14px', width: '22%', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>User / Email</th>
+              <th style={{ padding: '12px 14px', width: '12%', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>Service</th>
+              
+              {/* Dynamically Generated Form Data Columns */}
+              {dynamicKeys.map(key => (
+                <th key={key} style={{ padding: '12px 14px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  {formatHeaderLabel(key)}
+                </th>
+              ))}
 
-                <th style={{ padding: '14px 16px', whiteSpace: 'nowrap' }}>Activity</th>
-                <th style={{ padding: '14px 16px', whiteSpace: 'nowrap' }}>Submitted Date</th>
-                <th style={{ padding: '14px 16px', whiteSpace: 'nowrap', textAlign: 'right' }}>Action</th>
+              <th style={{ padding: '12px 14px', width: '20%', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>Activity</th>
+              <th style={{ padding: '12px 14px', width: '16%', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>Submitted Date</th>
+              <th style={{ padding: '12px 14px', width: '10%', whiteSpace: 'nowrap', textAlign: 'right' }}>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {loading ? (
+              <tr>
+                <td colSpan={4 + dynamicKeys.length} style={{ textAlign: 'center', padding: '36px 16px', color: '#64748b' }}>
+                  <RefreshCw size={22} style={{ margin: '0 auto 10px', color: '#2563eb' }} className="animate-spin" />
+                  <div style={{ fontWeight: 600 }}>Loading operations data...</div>
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {loading ? (
-                <tr>
-                  <td colSpan={4 + dynamicKeys.length} style={{ textAlign: 'center', padding: '48px 16px', color: '#64748b' }}>
-                    <RefreshCw size={24} style={{ margin: '0 auto 12px', color: '#2563eb' }} className="animate-spin" />
-                    <div style={{ fontWeight: 600 }}>Loading operations data...</div>
-                  </td>
-                </tr>
-              ) : filteredSubmissions.length === 0 ? (
-                <tr>
-                  <td colSpan={4 + dynamicKeys.length} style={{ textAlign: 'center', padding: '56px 16px', color: '#64748b' }}>
-                    <FileSpreadsheet size={36} style={{ margin: '0 auto 12px', color: '#cbd5e1' }} />
-                    <div style={{ fontWeight: 700, color: '#0f172a', fontSize: '0.95rem' }}>No Submissions Found</div>
-                    <div style={{ fontSize: '0.8rem', color: '#94a3b8', marginTop: '2px' }}>Try adjusting your activity filter or search terms</div>
-                  </td>
-                </tr>
-              ) : (
-                filteredSubmissions.map((item) => {
-                  const data = item.form_data || item.submission_data || {};
-                  const fullName = data.fullName || data.name || item.user_id;
-                  const email = data.email;
+            ) : filteredSubmissions.length === 0 ? (
+              <tr>
+                <td colSpan={4 + dynamicKeys.length} style={{ textAlign: 'center', padding: '40px 16px', color: '#64748b' }}>
+                  <FileSpreadsheet size={32} style={{ margin: '0 auto 10px', color: '#cbd5e1' }} />
+                  <div style={{ fontWeight: 700, color: '#0f172a', fontSize: '0.9rem' }}>No Submissions Found</div>
+                  <div style={{ fontSize: '0.78rem', color: '#94a3b8', marginTop: '2px' }}>Try adjusting your activity filter or search terms</div>
+                </td>
+              </tr>
+            ) : (
+              filteredSubmissions.map((item) => {
+                const data = item.form_data || item.submission_data || {};
+                const fullName = data.fullName || data.name || item.user_id;
+                const email = data.email;
 
-                  return (
-                    <tr 
-                      key={item.id} 
-                      style={{ borderBottom: '1px solid #f1f5f9', transition: 'background 0.15s ease' }}
-                      onMouseEnter={(e) => e.currentTarget.style.background = '#f8fafc'}
-                      onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
-                    >
-                      
-                      {/* Column 1: User / Email */}
-                      <td style={{ padding: '14px 16px', verticalAlign: 'middle', whiteSpace: 'nowrap' }}>
-                        <div style={{ fontWeight: 700, color: '#0f172a', fontSize: '0.88rem' }}>{fullName}</div>
-                        {email && <div style={{ fontSize: '0.76rem', color: '#64748b', marginTop: '1px' }}>{email}</div>}
-                      </td>
+                return (
+                  <tr 
+                    key={item.id} 
+                    style={{ borderBottom: '1px solid #f1f5f9', transition: 'background 0.15s ease' }}
+                    onMouseEnter={(e) => e.currentTarget.style.background = '#f8fafc'}
+                    onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                  >
+                    
+                    {/* Column 1: User / Email */}
+                    <td style={{ padding: '11px 12px', verticalAlign: 'middle', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }} title={`${fullName} (${email || ''})`}>
+                      <div style={{ fontWeight: 700, color: '#0f172a', fontSize: '0.82rem', overflow: 'hidden', textOverflow: 'ellipsis' }}>{fullName}</div>
+                      {email && <div style={{ fontSize: '0.72rem', color: '#64748b', marginTop: '1px', overflow: 'hidden', textOverflow: 'ellipsis' }}>{email}</div>}
+                    </td>
 
-                      {/* Column 2: Service Context Badge */}
-                      <td style={{ padding: '14px 16px', verticalAlign: 'middle', whiteSpace: 'nowrap' }}>
-                        {item.service ? (
-                          <span style={{ 
-                            padding: '3px 10px', 
-                            borderRadius: '6px', 
-                            background: 'linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%)', 
-                            color: '#7e22ce', 
-                            border: '1px solid #e9d5ff',
-                            fontSize: '0.75rem', 
-                            fontWeight: 700, 
-                            textTransform: 'capitalize',
-                            display: 'inline-block'
-                          }}>
-                            {item.service}
-                          </span>
-                        ) : (
-                          <span style={{ color: '#cbd5e1', fontSize: '0.78rem' }}>—</span>
-                        )}
-                      </td>
+                    {/* Column 2: Service Context Badge */}
+                    <td style={{ padding: '11px 12px', verticalAlign: 'middle', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                      {item.service ? (
+                        <span style={{ 
+                          padding: '2px 8px', 
+                          borderRadius: '6px', 
+                          background: 'linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%)', 
+                          color: '#7e22ce', 
+                          border: '1px solid #e9d5ff',
+                          fontSize: '0.74rem', 
+                          fontWeight: 700, 
+                          textTransform: 'capitalize',
+                          display: 'inline-block'
+                        }}>
+                          {item.service}
+                        </span>
+                      ) : (
+                        <span style={{ color: '#cbd5e1', fontSize: '0.78rem' }}>—</span>
+                      )}
+                    </td>
 
-                      {/* Dynamic Form Field Columns */}
-                      {dynamicKeys.map(key => {
-                        const val = data[key];
-                        const isImage = PROOF_KEYS.includes(key);
+                    {/* Dynamic Form Field Columns */}
+                    {dynamicKeys.map(key => {
+                      const val = data[key];
+                      const isImage = PROOF_KEYS.includes(key);
 
-                        if (isImage && val) {
-                          return (
-                            <td key={key} style={{ padding: '14px 16px', verticalAlign: 'middle', whiteSpace: 'nowrap' }}>
-                              <button
-                                onClick={() => setPreviewImage(val)}
-                                style={{
-                                  padding: '4px 12px',
-                                  borderRadius: '8px',
-                                  border: '1px solid #e9d5ff',
-                                  background: '#faf5ff',
-                                  color: '#7e22ce',
-                                  fontSize: '0.76rem',
-                                  fontWeight: 700,
-                                  cursor: 'pointer',
-                                  display: 'inline-flex',
-                                  alignItems: 'center',
-                                  gap: '5px',
-                                  transition: 'all 0.15s ease'
-                                }}
-                                onMouseEnter={(e) => e.currentTarget.style.background = '#f3e8ff'}
-                                onMouseLeave={(e) => e.currentTarget.style.background = '#faf5ff'}
-                              >
-                                🖼️ View Proof
-                              </button>
-                            </td>
-                          );
-                        }
-
+                      if (isImage && val) {
                         return (
-                          <td key={key} style={{ padding: '14px 16px', verticalAlign: 'middle', whiteSpace: 'nowrap', maxWidth: '240px', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                            {val !== undefined && val !== null && val !== '' ? (
-                              <span style={{ color: '#334155', fontWeight: 600 }}>{String(val)}</span>
-                            ) : (
-                              <span style={{ color: '#cbd5e1' }}>—</span>
-                            )}
+                          <td key={key} style={{ padding: '11px 12px', verticalAlign: 'middle', whiteSpace: 'nowrap' }}>
+                            <button
+                              onClick={() => setPreviewImage(val)}
+                              style={{
+                                padding: '3px 10px',
+                                borderRadius: '6px',
+                                border: '1px solid #e9d5ff',
+                                background: '#faf5ff',
+                                color: '#7e22ce',
+                                fontSize: '0.74rem',
+                                fontWeight: 700,
+                                cursor: 'pointer',
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '4px'
+                              }}
+                            >
+                              🖼️ Proof
+                            </button>
                           </td>
                         );
-                      })}
+                      }
 
-                      {/* Activity Name */}
-                      <td style={{ padding: '14px 16px', verticalAlign: 'middle', whiteSpace: 'nowrap', maxWidth: '170px' }}>
-                        <div 
-                          style={{ 
-                            fontSize: '0.78rem', 
-                            fontWeight: 600, 
-                            color: '#475569', 
-                            overflow: 'hidden', 
-                            textOverflow: 'ellipsis', 
-                            whiteSpace: 'nowrap' 
-                          }}
-                          title={item.activity_title}
-                        >
-                          {item.activity_title}
-                        </div>
-                      </td>
+                      return (
+                        <td key={key} style={{ padding: '11px 12px', verticalAlign: 'middle', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }} title={String(val || '')}>
+                          {val !== undefined && val !== null && val !== '' ? (
+                            <span style={{ color: '#334155', fontWeight: 600 }}>{String(val)}</span>
+                          ) : (
+                            <span style={{ color: '#cbd5e1' }}>—</span>
+                          )}
+                        </td>
+                      );
+                    })}
 
-                      {/* Submitted Date */}
-                      <td style={{ padding: '14px 16px', verticalAlign: 'middle', whiteSpace: 'nowrap', fontSize: '0.8rem', color: '#64748b' }}>
-                        {formatDate(item.created_at)}
-                      </td>
+                    {/* Activity Name */}
+                    <td style={{ padding: '11px 12px', verticalAlign: 'middle', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }} title={item.activity_title}>
+                      <div style={{ fontSize: '0.78rem', fontWeight: 600, color: '#475569', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                        {item.activity_title}
+                      </div>
+                    </td>
 
-                      {/* Action View Button */}
-                      <td style={{ padding: '14px 16px', verticalAlign: 'middle', textAlign: 'right', whiteSpace: 'nowrap' }}>
-                        <button
-                          onClick={() => setSelectedSubmission(item)}
-                          style={{
-                            padding: '5px 12px',
-                            borderRadius: '8px',
-                            border: '1px solid #bfdbfe',
-                            background: '#eff6ff',
-                            color: '#2563eb',
-                            fontWeight: 700,
-                            fontSize: '0.78rem',
-                            cursor: 'pointer',
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: '4px',
-                            transition: 'all 0.15s ease'
-                          }}
-                          onMouseEnter={(e) => {
-                            e.currentTarget.style.background = '#dbeafe';
-                            e.currentTarget.style.borderColor = '#93c5fd';
-                          }}
-                          onMouseLeave={(e) => {
-                            e.currentTarget.style.background = '#eff6ff';
-                            e.currentTarget.style.borderColor = '#bfdbfe';
-                          }}
-                        >
-                          View <ChevronRight size={14} />
-                        </button>
-                      </td>
+                    {/* Submitted Date */}
+                    <td style={{ padding: '11px 12px', verticalAlign: 'middle', whiteSpace: 'nowrap', fontSize: '0.78rem', color: '#64748b', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                      {formatDate(item.created_at)}
+                    </td>
+
+                    {/* Action View Button */}
+                    <td style={{ padding: '11px 12px', verticalAlign: 'middle', textAlign: 'right', whiteSpace: 'nowrap' }}>
+                      <button
+                        onClick={() => setSelectedSubmission(item)}
+                        style={{
+                          padding: '4px 10px',
+                          borderRadius: '6px',
+                          border: '1px solid #cbd5e1',
+                          background: '#ffffff',
+                          color: '#2563eb',
+                          fontSize: '0.76rem',
+                          fontWeight: 800,
+                          cursor: 'pointer'
+                        }}
+                      >
+                        View <ChevronRight size={13} />
+                      </button>
+                    </td>
 
                     </tr>
                   );
@@ -511,7 +485,6 @@ export default function SubmissionsTable() {
               )}
             </tbody>
           </table>
-        </div>
       </div>
 
       {/* MODAL 1: Premium Image Proof Viewer Portal */}

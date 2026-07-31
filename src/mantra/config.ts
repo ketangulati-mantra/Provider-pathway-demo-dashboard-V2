@@ -2,6 +2,8 @@
  * Mantra Care Platform Configuration
  */
 export const MANTRA_CONFIG = {
+  apiBaseUrl: 'http://localhost:5000',
+
   dashboardUrl: 'https://provider.mantracare.com/pathway',
 
   webhookUrl: 'https://api.mantracare.com/webhook/pathway',
