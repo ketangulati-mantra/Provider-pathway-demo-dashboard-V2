@@ -15,6 +15,8 @@ function App() {
     
     if (base && p.startsWith(base)) {
       p = p.slice(base.length) || '/';
+    } else if (p.startsWith('/provider_dashboard_v1')) {
+      p = p.slice('/provider_dashboard_v1'.length) || '/';
     } else if (p.startsWith('/provider_pathways_dashboard_v1')) {
       p = p.slice('/provider_pathways_dashboard_v1'.length) || '/';
     } else if (p.startsWith('/provider_pathways_v2_testing')) {
