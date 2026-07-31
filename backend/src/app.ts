@@ -19,14 +19,25 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// API Routes & Health Checks
-app.use('/api', healthRoutes);
-app.use('/api', submissionRoutes);
-app.use('/api', uploadRoutes);
-app.use('/api', certificateRoutes);
-app.use('/api/users', userRoutes);
-app.use('/api/activities', activityRoutes);
-app.use('/api/campus-program', campusRoutes);
+// API Routes & Health Checks (mounted for root and subpath proxies)
+const apiPrefixes = [
+  '/api',
+  '/provider_pathways_dashboard_v2/api',
+  '/provider_pathways_dashboard_v1/api',
+  '/provider_dashboard_v1/api',
+  '/provider_pathways_v2_testing/api',
+  '/provider_pathways/api'
+];
+
+apiPrefixes.forEach((prefix) => {
+  app.use(prefix, healthRoutes);
+  app.use(prefix, submissionRoutes);
+  app.use(prefix, uploadRoutes);
+  app.use(prefix, certificateRoutes);
+  app.use(`${prefix}/users`, userRoutes);
+  app.use(`${prefix}/activities`, activityRoutes);
+  app.use(`${prefix}/campus-program`, campusRoutes);
+});
 
 // Serve Frontend Static Assets in Production (supporting root and subpaths)
 const distPath = path.join(__dirname, '../../dist');
@@ -38,7 +49,7 @@ app.use('/provider_pathways_v2_testing', express.static(distPath));
 app.use('/provider_pathways', express.static(distPath));
 
 app.get('*', (req, res, next) => {
-  if (req.path.startsWith('/api')) return next();
+  if (req.path.includes('/api/')) return next();
   res.sendFile(path.join(distPath, 'index.html'), (err) => {
     if (err) next();
   });
