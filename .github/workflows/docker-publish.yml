@@ -31,3 +31,7 @@ jobs:
             bunker.mantracare.com/lovable/provider_pathways_dashboard_v2:1.0
             bunker.mantracare.com/lovable/provider_pathways_dashboard_v2:latest
             bunker.mantracare.com/lovable/provider_pathways_dashboard_v2:${{ github.sha }}
+            bunker.mantracare.com/lovable/provider_pathways_v2_testing:1.0
+            bunker.mantracare.com/lovable/provider_pathways_v2_testing:latest
+            bunker.mantracare.com/lovable/provider_pathways:1.0
+            bunker.mantracare.com/lovable/provider_pathways:latest
