@@ -183,7 +183,7 @@ export default function DeveloperLessonsPage({ onNavigate }) {
       </header>
 
       {/* MAIN CONTAINER CONTENT */}
-      <div style={{ maxWidth: '1360px', margin: '0 auto', padding: '24px 20px' }}>
+      <div style={{ maxWidth: '1720px', margin: '0 auto', padding: '24px 28px' }}>
 
         {/* TAB 1: CAMPUS PROGRAM ADMIN */}
         {activeTab === 'campus_admin' && (

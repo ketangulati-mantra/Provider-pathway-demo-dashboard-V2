@@ -144,7 +144,7 @@ export default function CampusProgramController({ onBack }) {
   // Clean, Simple Skeleton Loader
   if (loading) {
     return (
-      <div style={{ maxWidth: '1200px', margin: '20px auto', padding: '0 16px', display: 'flex', flexDirection: 'column', gap: '16px', width: '100%', boxSizing: 'border-box' }} className="animate-fade-in">
+      <div style={{ maxWidth: '1600px', margin: '20px auto', padding: '0 24px', display: 'flex', flexDirection: 'column', gap: '16px', width: '100%', boxSizing: 'border-box' }} className="animate-fade-in">
         <style>{`
           @keyframes skeleton-shimmer {
             0% { opacity: 0.5; }

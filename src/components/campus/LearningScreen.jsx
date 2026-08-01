@@ -68,7 +68,7 @@ export default function LearningScreen({ statusData, onCompleteModule, onSubmitA
   };
 
   return (
-    <div ref={topRef} style={{ maxWidth: '1200px', margin: '0 auto', padding: '12px 16px 50px', width: '100%', boxSizing: 'border-box' }} className="animate-fade-in">
+    <div ref={topRef} style={{ maxWidth: '1600px', margin: '0 auto', padding: '12px 24px 50px', width: '100%', boxSizing: 'border-box' }} className="animate-fade-in">
 
       {/* CSS Styles for Layout Stability, Udemy Player & Mobile Responsiveness */}
       <style>{`
