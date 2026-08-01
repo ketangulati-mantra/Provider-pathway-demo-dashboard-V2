@@ -12,17 +12,15 @@ dotenv.config({ path: path.resolve(__dirname, '../.env') });
 const isProd = process.env.NODE_ENV === 'production';
 const targetPort = process.env.PORT ? parseInt(process.env.PORT, 10) : (isProd ? 80 : 5000);
 
+const DEFAULT_DB_URL = 'postgresql://neondb_owner:npg_p3UDOg6fsydB@ep-still-wave-azxe0y0q.c-3.ap-southeast-1.aws.neon.tech/neondb?sslmode=require';
+
 export const config = {
   port: targetPort,
-  databaseUrl: process.env.DATABASE_URL || '',
+  databaseUrl: process.env.DATABASE_URL || DEFAULT_DB_URL,
   nodeEnv: process.env.NODE_ENV || 'development',
   cloudinary: {
-    cloudName: process.env.CLOUDINARY_CLOUD_NAME || '',
-    apiKey: process.env.CLOUDINARY_API_KEY || '',
-    apiSecret: process.env.CLOUDINARY_API_SECRET || '',
+    cloudName: process.env.CLOUDINARY_CLOUD_NAME || 'hxbamdqf',
+    apiKey: process.env.CLOUDINARY_API_KEY || '945291215694863',
+    apiSecret: process.env.CLOUDINARY_API_SECRET || 'bf4nrUef-ITYjztuN3vZecq_KWI',
   }
 };
-
-if (!config.databaseUrl) {
-  console.warn('⚠️ Warning: DATABASE_URL is not defined in backend/.env');
-}
