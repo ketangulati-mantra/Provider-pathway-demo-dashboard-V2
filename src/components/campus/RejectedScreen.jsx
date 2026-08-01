@@ -89,7 +89,7 @@ export default function RejectedScreen({ statusData, onResubmitVersionSuccess, o
 
         <div>
           <span style={{ fontSize: '0.75rem', fontWeight: 900, color: '#991b1b', textTransform: 'uppercase', background: '#fef2f2', padding: '4px 12px', borderRadius: '10px' }}>
-            Application Status: Not Approved (v{application.version || 1})
+            Application Status: Not Approved
           </span>
           <h1 style={{ fontSize: '1.6rem', fontWeight: 900, color: '#0f172a', margin: '10px 0 6px' }}>
             Application Review Update
@@ -113,7 +113,7 @@ export default function RejectedScreen({ statusData, onResubmitVersionSuccess, o
             Would you like to address the review feedback and submit an updated application?
           </div>
           <div style={{ fontSize: '0.78rem', color: '#64748b' }}>
-            Submitting an updated application creates a new application version (v{(application.version || 1) + 1}) while preserving your full history.
+            Submitting an updated application refreshes your application details while preserving your full history.
           </div>
 
           <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', justifyContent: 'center', marginTop: '4px' }}>
@@ -134,7 +134,7 @@ export default function RejectedScreen({ statusData, onResubmitVersionSuccess, o
                 boxShadow: '0 8px 20px rgba(37, 99, 235, 0.25)'
               }}
             >
-              <Send size={16} /> Submit Updated Application (v{(application.version || 1) + 1})
+              <Send size={16} /> Submit Updated Application
             </button>
 
             <a

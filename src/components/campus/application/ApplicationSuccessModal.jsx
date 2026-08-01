@@ -51,14 +51,14 @@ export default function ApplicationSuccessModal({ isOpen, onContinue, onReturnDa
           <CheckCircle2 size={26} />
         </div>
 
-        <div>
-          <span style={{ fontSize: '0.72rem', fontWeight: 800, color: '#1e40af', textTransform: 'uppercase', letterSpacing: '0.04em', background: '#eff6ff', border: '1px solid #dbeafe', padding: '3px 10px', borderRadius: '6px' }}>
+        <div style={{ width: '100%', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <span style={{ fontSize: '0.72rem', fontWeight: 800, color: '#1e40af', textTransform: 'uppercase', letterSpacing: '0.04em', background: '#eff6ff', border: '1px solid #dbeafe', padding: '3px 10px', borderRadius: '6px', display: 'inline-block' }}>
             Registration Received
           </span>
-          <h2 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#0f172a', margin: '10px 0 6px' }}>
+          <h2 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#0f172a', margin: '10px 0 6px', width: '100%', textAlign: 'center' }}>
             Application Submitted
           </h2>
-          <p style={{ fontSize: '0.84rem', color: '#64748b', lineHeight: 1.5, margin: 0 }}>
+          <p style={{ fontSize: '0.84rem', color: '#64748b', lineHeight: 1.5, margin: 0, width: '100%', textAlign: 'center' }}>
             Thank you for joining the Campus Initiative. Your application has been received successfully and +50 Credits have been added to your account.
           </p>
         </div>

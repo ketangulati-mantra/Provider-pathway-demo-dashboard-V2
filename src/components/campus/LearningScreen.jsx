@@ -274,36 +274,35 @@ export default function LearningScreen({ statusData, onCompleteModule, onSubmitA
             </div>
 
             {/* Bottom Action Footer */}
-            <div style={{ paddingTop: '16px', borderTop: '1px solid #e2e8f0', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
-              <div style={{ fontSize: '0.82rem', color: '#64748b', fontWeight: 700 }}>
+            <div style={{ paddingTop: '16px', marginTop: '12px', borderTop: '1px solid #e2e8f0', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '14px', width: '100%', boxSizing: 'border-box' }}>
+              <div style={{ fontSize: '0.82rem', color: '#475569', fontWeight: 700 }}>
                 Completion Bonus: <strong style={{ color: '#059669' }}>+20 Credits Overall (upon completing all 3 modules)</strong>
               </div>
 
-              <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-                <button
-                  onClick={handlePrevModule}
-                  disabled={activeModuleIndex === 0}
-                  style={{
-                    padding: '10px 16px',
-                    borderRadius: '10px',
-                    border: '1px solid #cbd5e1',
-                    background: '#ffffff',
-                    color: '#475569',
-                    fontWeight: 800,
-                    fontSize: '0.85rem',
-                    cursor: activeModuleIndex > 0 ? 'pointer' : 'default',
-                    visibility: activeModuleIndex > 0 ? 'visible' : 'hidden',
-                    pointerEvents: activeModuleIndex > 0 ? 'auto' : 'none'
-                  }}
-                >
-                  Previous
-                </button>
+              <div style={{ display: 'flex', gap: '10px', alignItems: 'center', marginLeft: 'auto' }}>
+                {activeModuleIndex > 0 && (
+                  <button
+                    onClick={handlePrevModule}
+                    style={{
+                      padding: '10px 16px',
+                      borderRadius: '10px',
+                      border: '1px solid #cbd5e1',
+                      background: '#ffffff',
+                      color: '#475569',
+                      fontWeight: 800,
+                      fontSize: '0.85rem',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    Previous
+                  </button>
+                )}
 
                 <button
                   onClick={handleCompleteClick}
                   disabled={currentModule.completed || isUpdating}
                   style={{
-                    padding: '10px 20px',
+                    padding: '10px 22px',
                     borderRadius: '10px',
                     border: 'none',
                     background: currentModule.completed ? '#f1f5f9' : 'linear-gradient(135deg, #2563eb 0%, #7c3aed 100%)',
@@ -313,7 +312,9 @@ export default function LearningScreen({ statusData, onCompleteModule, onSubmitA
                     cursor: currentModule.completed ? 'default' : 'pointer',
                     display: 'inline-flex',
                     alignItems: 'center',
-                    gap: '6px'
+                    justifyContent: 'center',
+                    gap: '6px',
+                    boxShadow: currentModule.completed ? 'none' : '0 4px 12px rgba(37, 99, 235, 0.25)'
                   }}
                 >
                   {currentModule.completed ? <>Completed ✓</> : <>Mark Complete & Continue <ArrowRight size={15} /></>}
