@@ -6,7 +6,7 @@ import { activities as mantraActivities, getCurrentService, setServiceContext, p
 
 const MANTRA_LOGO_URL = 'https://res.cloudinary.com/hxbamdqf/image/upload/v1784698269/Mantra_logo_yptwwe.svg';
 
-export default function DeveloperLessonsPage() {
+export default function DeveloperLessonsPage({ onNavigate }) {
   const [selectedService, setSelectedService] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [activeTab, setActiveTab] = useState('campus_admin'); // 'campus_admin' | 'submissions' | 'lessons'
