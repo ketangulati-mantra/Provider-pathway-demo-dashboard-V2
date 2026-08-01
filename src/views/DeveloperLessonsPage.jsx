@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Search, BookOpen, Database, Menu, GraduationCap, Clock, ArrowRight, Filter } from 'lucide-react';
+import { Search, BookOpen, Database, Menu, GraduationCap, Clock, ArrowRight, Filter, X, ChevronRight } from 'lucide-react';
 import SubmissionsTable from '../components/SubmissionsTable';
 import CampusAdminDashboard from '../components/admin/CampusAdminDashboard';
 import { activities as mantraActivities, getCurrentService, setServiceContext, preserveQueryParams, SUPPORTED_SERVICES } from '../mantra';
@@ -9,7 +9,8 @@ const MANTRA_LOGO_URL = 'https://res.cloudinary.com/hxbamdqf/image/upload/v17846
 export default function DeveloperLessonsPage({ onNavigate }) {
   const [selectedService, setSelectedService] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
-  const [activeTab, setActiveTab] = useState('campus_admin'); // 'campus_admin' | 'submissions' | 'lessons'
+  const [activeTab, setActiveTab] = useState('submissions'); // Default to 'submissions'
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const searchInputRef = useRef(null);
 
   useEffect(() => {
@@ -93,17 +94,33 @@ export default function DeveloperLessonsPage({ onNavigate }) {
         padding: '12px 28px',
         display: 'flex',
         alignItems: 'center',
-        justify: 'space-between',
+        justifyContent: 'space-between',
         boxShadow: '0 2px 10px rgba(0,0,0,0.03)',
         position: 'sticky',
         top: 0,
         zIndex: 100
       }}>
-        {/* Left Logo Section */}
+        {/* Left Logo Section & Menu Trigger */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '18px' }}>
-          <button style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '4px', display: 'flex', alignItems: 'center', color: '#334155' }}>
+          <button 
+            onClick={() => setIsSidebarOpen(true)}
+            title="Open Navigation Menu"
+            style={{ 
+              background: '#f8fafc', 
+              border: '1px solid #cbd5e1', 
+              borderRadius: '8px',
+              cursor: 'pointer', 
+              padding: '6px 8px', 
+              display: 'flex', 
+              alignItems: 'center', 
+              justifyContent: 'center',
+              color: '#043263',
+              transition: 'background 0.15s ease'
+            }}
+          >
             <Menu size={22} />
           </button>
+          
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             <img 
               src={MANTRA_LOGO_URL} 
@@ -113,74 +130,159 @@ export default function DeveloperLessonsPage({ onNavigate }) {
           </div>
         </div>
 
-        {/* Right Navigation Tabs */}
-        <div style={{ display: 'flex', background: '#f1f5f9', padding: '4px', borderRadius: '12px', gap: '4px', border: '1px solid #cbd5e1' }}>
-          
-          <button
-            onClick={() => setActiveTab('campus_admin')}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '7px',
-              padding: '8px 18px',
-              borderRadius: '9px',
-              border: 'none',
-              background: activeTab === 'campus_admin' ? '#043263' : 'transparent',
-              color: activeTab === 'campus_admin' ? '#ffffff' : '#475569',
-              fontWeight: activeTab === 'campus_admin' ? 800 : 600,
-              fontSize: '0.84rem',
-              cursor: 'pointer',
-              boxShadow: activeTab === 'campus_admin' ? '0 4px 12px rgba(4, 50, 99, 0.3)' : 'none',
-              transition: 'all 0.15s ease'
-            }}
-          >
-            <GraduationCap size={16} /> Campus Program
-          </button>
-
-          <button
-            onClick={() => setActiveTab('submissions')}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '7px',
-              padding: '8px 18px',
-              borderRadius: '9px',
-              border: 'none',
-              background: activeTab === 'submissions' ? '#043263' : 'transparent',
-              color: activeTab === 'submissions' ? '#ffffff' : '#475569',
-              fontWeight: activeTab === 'submissions' ? 800 : 600,
-              fontSize: '0.84rem',
-              cursor: 'pointer',
-              boxShadow: activeTab === 'submissions' ? '0 4px 12px rgba(4, 50, 99, 0.3)' : 'none',
-              transition: 'all 0.15s ease'
-            }}
-          >
-            <Database size={16} /> Form Submissions
-          </button>
-
-          <button
-            onClick={() => setActiveTab('lessons')}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '7px',
-              padding: '8px 18px',
-              borderRadius: '9px',
-              border: 'none',
-              background: activeTab === 'lessons' ? '#043263' : 'transparent',
-              color: activeTab === 'lessons' ? '#ffffff' : '#475569',
-              fontWeight: activeTab === 'lessons' ? 800 : 600,
-              fontSize: '0.84rem',
-              cursor: 'pointer',
-              boxShadow: activeTab === 'lessons' ? '0 4px 12px rgba(4, 50, 99, 0.3)' : 'none',
-              transition: 'all 0.15s ease'
-            }}
-          >
-            <BookOpen size={16} /> Pathways ({filteredActivities.length})
-          </button>
-
+        {/* Right Active Section Indicator */}
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px',
+          background: '#eff6ff',
+          border: '1px solid #bfdbfe',
+          padding: '6px 14px',
+          borderRadius: '10px',
+          color: '#043263',
+          fontSize: '0.84rem',
+          fontWeight: 800
+        }}>
+          {activeTab === 'campus_admin' && <><GraduationCap size={16} /> Campus Program</>}
+          {activeTab === 'submissions' && <><Database size={16} /> Form Submissions</>}
+          {activeTab === 'lessons' && <><BookOpen size={16} /> Pathways ({filteredActivities.length})</>}
         </div>
       </header>
+
+      {/* SIDEBAR NAVIGATION DRAWER */}
+      {isSidebarOpen && (
+        <div 
+          onClick={() => setIsSidebarOpen(false)}
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: 'rgba(15, 23, 42, 0.45)',
+            backdropFilter: 'blur(3px)',
+            zIndex: 9999,
+            display: 'flex',
+            transition: 'opacity 0.2s ease'
+          }}
+          className="animate-fade-in"
+        >
+          <div 
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              width: '300px',
+              maxWidth: '85vw',
+              height: '100%',
+              background: '#ffffff',
+              boxShadow: '8px 0 30px rgba(0,0,0,0.15)',
+              display: 'flex',
+              flexDirection: 'column',
+              padding: '24px 20px',
+              gap: '24px',
+              position: 'relative'
+            }}
+          >
+            {/* Sidebar Header */}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingBottom: '16px', borderBottom: '1px solid #e2e8f0' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <img 
+                  src={MANTRA_LOGO_URL} 
+                  alt="Mantra Care" 
+                  style={{ height: '28px', objectFit: 'contain' }}
+                />
+              </div>
+              <button 
+                onClick={() => setIsSidebarOpen(false)}
+                style={{ background: '#f1f5f9', border: 'none', borderRadius: '8px', padding: '6px', cursor: 'pointer', color: '#64748b' }}
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            {/* Nav Menu Items */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <div style={{ fontSize: '0.72rem', fontWeight: 800, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.05em', padding: '0 8px 4px' }}>
+                Platform Modules
+              </div>
+
+              <button
+                onClick={() => { setActiveTab('submissions'); setIsSidebarOpen(false); }}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justify: 'space-between',
+                  padding: '12px 16px',
+                  borderRadius: '12px',
+                  border: 'none',
+                  background: activeTab === 'submissions' ? '#043263' : '#f8fafc',
+                  color: activeTab === 'submissions' ? '#ffffff' : '#334155',
+                  fontWeight: 800,
+                  fontSize: '0.9rem',
+                  cursor: 'pointer',
+                  boxShadow: activeTab === 'submissions' ? '0 4px 14px rgba(4, 50, 99, 0.25)' : 'none',
+                  transition: 'all 0.15s ease'
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  <Database size={18} color={activeTab === 'submissions' ? '#ffffff' : '#043263'} />
+                  <span>Form Submissions</span>
+                </div>
+                <ChevronRight size={16} opacity={0.6} />
+              </button>
+
+              <button
+                onClick={() => { setActiveTab('campus_admin'); setIsSidebarOpen(false); }}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justify: 'space-between',
+                  padding: '12px 16px',
+                  borderRadius: '12px',
+                  border: 'none',
+                  background: activeTab === 'campus_admin' ? '#043263' : '#f8fafc',
+                  color: activeTab === 'campus_admin' ? '#ffffff' : '#334155',
+                  fontWeight: 800,
+                  fontSize: '0.9rem',
+                  cursor: 'pointer',
+                  boxShadow: activeTab === 'campus_admin' ? '0 4px 14px rgba(4, 50, 99, 0.25)' : 'none',
+                  transition: 'all 0.15s ease'
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  <GraduationCap size={18} color={activeTab === 'campus_admin' ? '#ffffff' : '#043263'} />
+                  <span>Campus Program</span>
+                </div>
+                <ChevronRight size={16} opacity={0.6} />
+              </button>
+
+              <button
+                onClick={() => { setActiveTab('lessons'); setIsSidebarOpen(false); }}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justify: 'space-between',
+                  padding: '12px 16px',
+                  borderRadius: '12px',
+                  border: 'none',
+                  background: activeTab === 'lessons' ? '#043263' : '#f8fafc',
+                  color: activeTab === 'lessons' ? '#ffffff' : '#334155',
+                  fontWeight: 800,
+                  fontSize: '0.9rem',
+                  cursor: 'pointer',
+                  boxShadow: activeTab === 'lessons' ? '0 4px 14px rgba(4, 50, 99, 0.25)' : 'none',
+                  transition: 'all 0.15s ease'
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  <BookOpen size={18} color={activeTab === 'lessons' ? '#ffffff' : '#043263'} />
+                  <span>Pathways ({filteredActivities.length})</span>
+                </div>
+                <ChevronRight size={16} opacity={0.6} />
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* MAIN CONTAINER CONTENT */}
       <div style={{ maxWidth: '1720px', margin: '0 auto', padding: '24px 28px' }}>
